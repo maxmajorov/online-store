@@ -15,7 +15,7 @@ export const SearchInput: React.FC<TInputProps> = ({
   return (
     <div className={classes.wrap}>
       <input
-        placeholder="Найти клиента"
+        placeholder="Search"
         className={classes.input}
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
