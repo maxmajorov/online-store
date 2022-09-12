@@ -4,9 +4,14 @@ import defaultAva from "../../../assets/img/def-image.png";
 import { SearchInput } from "../search-input/SearchInput";
 import classes from "./Header.module.scss";
 import { Button } from "@mui/material";
+import { SignIN } from "../../signInBtn/SignIn";
+import { SignOut } from "../../signOutBtn/SignOut";
+import { getAuth, signOut } from "firebase/auth";
 
 export const Header: React.FC = () => {
   const [searchCustomer, setSearchCustomer] = useState<string>("");
+
+  const auth = getAuth();
 
   const onSearchHandler = () => {
     console.log("find");
@@ -31,7 +36,8 @@ export const Header: React.FC = () => {
           <Button variant="outlined">My cart</Button>
           <span className={classes.controlsCartOrders}>0</span>
         </div>
-        <Button variant="outlined">Sign in</Button>
+        <SignIN />
+
         <div className={classes.controlsAvatar}>
           <img src={defaultAva} alt="avatar" />
         </div>

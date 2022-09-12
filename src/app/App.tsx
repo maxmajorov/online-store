@@ -7,7 +7,6 @@ import {
   appInitializeSelector,
   initializeAppTC,
 } from "../store/reducers/app-reducer";
-import { LoginForm } from "../components/LoginForm/LoginForm";
 import { Cart } from "../components/cart/Cart";
 import { OnlineStore } from "../components/onlineStore/OnlineStore";
 import { ErrorSnackbar } from "../components/common/ErrorSnackbar/ErrorSnackbar";
@@ -41,7 +40,7 @@ export const App = () => {
             }
           />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<LoginForm />} />
+          {/* <Route path="/login" element={<LoginForm />} /> */}
         </Routes>
       </Container>
     </div>

@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import defProdImg from "../../assets/img/defProdLogo.png";
+import { Button } from "@mui/material";
 import { Grade } from "../grade/Grade";
 import classes from "./OnlineStore.module.scss";
 
@@ -67,13 +67,13 @@ export const OnlineStore: React.FC = React.memo(() => {
         {productsList.map((pr) => (
           <div key={pr.id} className={classes.item}>
             <img src={pr.image ? pr.image : defProdImg} />
-            <div>{pr.title}</div>
-            <div>{pr.price}</div>
-            <div>{pr.description}</div>
+            <div className={classes.item_title}>{pr.title}</div>
+            <div className={classes.item_price}>${pr.price}</div>
+            <div className={classes.item_description}>{pr.description}</div>
             <div className={classes.controls}>
               <Grade value={pr.grade} />
               <Button variant="outlined" style={{ display: "block" }}>
-                Watch
+                buy
               </Button>
             </div>
           </div>

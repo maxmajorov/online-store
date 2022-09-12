@@ -6,24 +6,19 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app/App";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "./firebase-config";
 
-const rerenderEntireTree = () => {
-  ReactDOM.render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>,
+initializeApp(firebaseConfig);
 
-    document.getElementById("root")
-  );
-};
+ReactDOM.render(
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>,
+
+  document.getElementById("root")
+);
 
 serviceWorker.unregister();
-rerenderEntireTree();
-
-if (process.env.NODE_ENV === "development" && module.hot) {
-  module.hot.accept("./app/App", () => {
-    rerenderEntireTree();
-  });
-}
