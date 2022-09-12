@@ -8,16 +8,10 @@ type WithLayoutPropsType = {
 export const WithLayout: React.FC<WithLayoutPropsType> = ({ children }) => {
   return (
     <div className={classes.page}>
-      {/* <div>
-                    <Header />
-                </div> */}
       <div className={classes.container}>
-        <div className={classes.body}>
-          {/* {isMenuShown && <SideBar />} */}
-          <div className={classes.main}>{children}</div>
-        </div>
+        {/* {isMenuShown && <SideBar />} */}
+        {children}
       </div>
-
       {/* <Footer /> */}
     </div>
   );

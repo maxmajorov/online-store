@@ -1,8 +1,22 @@
 .wrapper {
-  /* height: 100%; */
-  padding: 20px;
-  box-shadow: 0px 0px 30px 4px #1976d2;
-  
+
+  .productsList {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: space-between;
+    grid-row-gap: 15px;
+    grid-column-gap: 15px;
+
+    .item {
+      padding: 15px;
+      
+      &:hover {
+        border-radius: 7px;
+        box-shadow: 0px 0px 30px 4px #EDEDF0;
+      }
+    }
+  }
+   
 }
 
 .title {
