@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FocusEvent, MouseEvent, useState } from "react";
-import { RequestStatusType } from "../../store/reducers/app-reducer";
+import { RequestStatusType } from "../../../store/reducers/app-reducer";
 // import classes from "./EditableSpan.module.css";
 
 type EditableSpanPropsType = {

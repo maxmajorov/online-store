@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Container } from "@mui/material";
 import "./App.css";
-import { ErrorSnackbar } from "../components/ErrorSnackbar/ErrorSnackbar";
 import { Route, Routes } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import {
@@ -11,7 +10,9 @@ import {
 import { LoginForm } from "../components/LoginForm/LoginForm";
 import { Cart } from "../components/cart/Cart";
 import { OnlineStore } from "../components/onlineStore/OnlineStore";
-import { Header } from "../components/header/Header";
+import { ErrorSnackbar } from "../components/common/ErrorSnackbar/ErrorSnackbar";
+import { Header } from "../components/common/header/Header";
+import { WithLayout } from "../components/common/withLayout/WithLayout";
 
 export const App = () => {
   const isInitialized = useAppSelector(appInitializeSelector);
@@ -31,7 +32,14 @@ export const App = () => {
       <ErrorSnackbar />
       <Container fixed>
         <Routes>
-          <Route path="/" element={<OnlineStore />} />
+          <Route
+            path="/"
+            element={
+              <WithLayout>
+                <OnlineStore />
+              </WithLayout>
+            }
+          />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<LoginForm />} />
         </Routes>

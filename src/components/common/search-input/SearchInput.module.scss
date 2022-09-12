@@ -1,0 +1,26 @@
+.wrap {
+    position: relative;
+    width: 100%;  
+    margin-bottom: 20px;
+
+  .input {
+    width: 100%;
+    height: 38px;  
+    padding: 6px 10px;
+    border-radius: 99px;
+    background: #EDEDF0;
+    font-size: 13px;
+    border: none;
+
+        &:focus {
+             border: 1px solid blue;
+        } 
+       
+    }
+    
+    .icon {
+        position: absolute;
+        top: 6px;
+        right: 10px;
+    }      
+}
