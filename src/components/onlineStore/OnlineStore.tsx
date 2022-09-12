@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useCallback, useEffect } from "react";
 import defProdImg from "../../assets/img/defProdLogo.png";
+import { Grade } from "../grade/Grade";
 import classes from "./OnlineStore.module.scss";
 
 type ProductsType = {
@@ -69,9 +70,11 @@ export const OnlineStore: React.FC = React.memo(() => {
             <div>{pr.title}</div>
             <div>{pr.price}</div>
             <div>{pr.description}</div>
-            <div>
-              <div>{pr.grade}</div>
-              <Button variant="outlined">Watch</Button>
+            <div className={classes.controls}>
+              <Grade value={pr.grade} />
+              <Button variant="outlined" style={{ display: "block" }}>
+                Watch
+              </Button>
             </div>
           </div>
         ))}
