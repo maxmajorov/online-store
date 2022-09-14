@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
+import LinearProgress from "@mui/material/LinearProgress";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -29,6 +30,7 @@ export const SignIN: React.FC = (props) => {
       const { user } = await signInWithPopup(auth, new GoogleAuthProvider());
       console.log(user.uid);
       setIsAuth(!isAuth);
+      setOpen(!open);
       navigate("/");
     } catch (error: any) {
       console.log(error.message);

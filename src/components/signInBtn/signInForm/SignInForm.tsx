@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import Button from "@mui/material/Button";
 import GoogleIcon from "@mui/icons-material/Google";
+import Grid from "@mui/material/Grid";
+import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Link from "@mui/material/Link";
 import classes from "./SignInForm.module.scss";
 
 type SignInFormModalType = {
@@ -19,6 +30,8 @@ export const SignInFormModal: React.FC<SignInFormModalType> = ({
   signInWithEmail,
   signInWithGoogle,
 }) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -39,7 +52,6 @@ export const SignInFormModal: React.FC<SignInFormModalType> = ({
       return errors;
     },
 
-    // ?????????????????????????????????????
     onSubmit: (values: FormikValuesTypes) => {
       console.log(values);
       signInWithEmail(values);
@@ -48,10 +60,15 @@ export const SignInFormModal: React.FC<SignInFormModalType> = ({
     },
   });
 
-  // const sendUserDataHandler = () => {
-  //   signInRequest(formik.values);
-  //   setActive(!active);
-  // };
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   return (
     <div
@@ -62,49 +79,85 @@ export const SignInFormModal: React.FC<SignInFormModalType> = ({
         className={classes.modalContent}
         onClick={(e) => e.stopPropagation()}
       >
-        <h3>Sign In</h3>
-        <form onSubmit={formik.handleSubmit} className={classes.form}>
-          <div>
-            <label htmlFor="email">Email: </label>
-            <input
-              id="email"
-              name="email"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-              // {...formik.getFieldProps("first_name")}
-            />
-          </div>
-          <div>
-            <label>Password: </label>
-            <input {...formik.getFieldProps("password")} />
-          </div>
+        <div className={classes.heading}>
+          <h2 className={classes.title}>Sign in</h2>
+        </div>
 
-          <div className={classes.controls}>
+        <form onSubmit={formik.handleSubmit} className={classes.form}>
+          <FormGroup>
+            <FormControl sx={{ m: 2, width: "300px" }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
+              <OutlinedInput
+                placeholder={"Enter email"}
+                label="Email"
+                {...formik.getFieldProps("email")}
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <div style={{ color: "red" }}>{formik.errors.email}</div>
+              ) : null}
+            </FormControl>
+            <FormControl sx={{ m: 2, width: "300px" }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                placeholder={"Enter password"}
+                type={showPassword ? "text" : "password"}
+                {...formik.getFieldProps("password")}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+              {formik.touched.password && formik.errors.password ? (
+                <div style={{ color: "red" }}>{formik.errors.password}</div>
+              ) : null}
+            </FormControl>
+
+            <Button
+              type={"submit"}
+              variant={"text"}
+              size={"large"}
+              className={classes.btn}
+              color={"primary"}
+              style={{ margin: "10px 0" }}
+              // disabled={disableBtn}
+            >
+              Login
+            </Button>
+
             <Button
               variant={"outlined"}
-              type="submit"
-              // onClick={sendUserDataHandler}
+              color={"primary"}
+              onClick={() => signInWithGoogle()}
+              disabled={authing}
+              endIcon={<GoogleIcon />}
+              style={{ width: "60%", margin: "auto" }}
             >
-              sign in
+              Sign in with
             </Button>
-            <button
-              type="button"
-              onClick={() => setActive(!active)}
-              style={{ backgroundColor: "red", color: "white" }}
-            >
-              Cancel
-            </button>
-          </div>
+            <div className={classes.forSignUp}>
+              <span className={classes.description}>
+                Don`t have an account?&ensp;
+              </span>
+              <Link
+                // onClick={() => navigate(PATH.REGISTRATION)}
+                className={classes.bottomRedirect}
+              >
+                Sign Up
+              </Link>
+            </div>
+          </FormGroup>
         </form>
-        <Button
-          variant={"contained"}
-          color={"primary"}
-          onClick={() => signInWithGoogle()}
-          disabled={authing}
-          endIcon={<GoogleIcon />}
-        >
-          Sign in with{" "}
-        </Button>
       </div>
     </div>
   );
@@ -118,11 +171,5 @@ type FormikValuesTypes = {
 };
 
 type FormikErrorType = {
-  firstName?: string;
-  lastName?: string;
-  age?: string;
-  phone?: string;
   email?: string;
-  country?: string;
-  city?: boolean;
 };
