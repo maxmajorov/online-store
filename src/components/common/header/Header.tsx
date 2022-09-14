@@ -5,13 +5,9 @@ import { SearchInput } from "../search-input/SearchInput";
 import classes from "./Header.module.scss";
 import { Button } from "@mui/material";
 import { SignIN } from "../../signInBtn/SignIn";
-import { SignOut } from "../../signOutBtn/SignOut";
-import { getAuth, signOut } from "firebase/auth";
 
 export const Header: React.FC = () => {
   const [searchCustomer, setSearchCustomer] = useState<string>("");
-
-  const auth = getAuth();
 
   const onSearchHandler = () => {
     console.log("find");
