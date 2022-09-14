@@ -66,7 +66,7 @@ export const OnlineStore: React.FC = React.memo(() => {
       <div className={classes.productsList}>
         {productsList.map((pr) => (
           <div key={pr.id} className={classes.item}>
-            <img src={pr.image ? pr.image : defProdImg} />
+            <img src={pr.image ? pr.image : defProdImg} alt={"product-item"} />
             <div className={classes.item_title}>{pr.title}</div>
             <div className={classes.item_price}>${pr.price}</div>
             <div className={classes.item_description}>{pr.description}</div>

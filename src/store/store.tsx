@@ -10,8 +10,6 @@ export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(thunkMiddleware),
-  // prepend and concat calls can be chained
-  // .concat(logger),
 });
 
 export type RootStateType = ReturnType<typeof store.getState>;
