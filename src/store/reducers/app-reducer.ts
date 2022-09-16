@@ -36,6 +36,7 @@ const slice = createSlice({
   name: "app",
   initialState: {
     status: "idle",
+
     error: null as null | string,
     isInitialized: false,
   },

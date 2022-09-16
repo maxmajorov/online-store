@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Logo from "../../../assets/img/logo.svg";
 import defaultAva from "../../../assets/img/def-image.png";
 import { SearchInput } from "../search-input/SearchInput";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
 import { LinearProgress } from "@mui/material";
 import { SignIN } from "../../signInBtn/SignIn";
 import { appStatusSelector } from "../../../store/reducers/app-reducer";
 import { useAppSelector } from "../../../store/store";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import IconButton from "@mui/material/IconButton";
 import classes from "./Header.module.scss";
 
 export const Header: React.FC = () => {
@@ -35,7 +37,10 @@ export const Header: React.FC = () => {
         </div>
         <div className={classes.controls}>
           <div className={classes.controlsCart}>
-            <Button variant="outlined">My cart</Button>
+            <IconButton color="primary" component="label">
+              <AddShoppingCartIcon fontSize="large" />
+            </IconButton>
+            {/* <Button variant="outlined">My cart</Button> */}
             <span className={classes.controlsCartOrders}>0</span>
           </div>
           <SignIN />

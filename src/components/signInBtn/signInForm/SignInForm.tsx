@@ -53,7 +53,7 @@ export const SignInFormModal: React.FC<SignInFormModalType> = ({
     onSubmit: (values: FormikValuesTypes) => {
       console.log(values);
       signInWithEmail(values);
-      setActive(!active);
+      // setActive(!active);
       formik.resetForm();
     },
   });

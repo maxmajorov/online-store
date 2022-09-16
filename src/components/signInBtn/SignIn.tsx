@@ -18,15 +18,23 @@ export const SignIN: React.FC = (props) => {
 
   const dispatch = useAppDispatch();
 
-  const signInWithGoogle = async () => {
-    dispatch(signInWithGoogleTC());
+  const signInWithGoogle = () => {
+    const result = dispatch(signInWithGoogleTC());
+
+    result.then(
+      (res) => res.meta.requestStatus === "fulfilled" && setOpen(!open)
+    );
   };
 
-  const signInWithEmail = async (data: { email: string; password: string }) => {
-    dispatch(signInWithEmailAndPasswordTC(data));
+  const signInWithEmail = (data: { email: string; password: string }) => {
+    const result = dispatch(signInWithEmailAndPasswordTC(data));
+
+    result.then(
+      (res) => res.meta.requestStatus === "fulfilled" && setOpen(!open)
+    );
   };
 
-  const signOutHandler = async () => {
+  const signOutHandler = () => {
     dispatch(logoutTC());
   };
 
