@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import Logo from "../../../assets/img/logo.svg";
 import defaultAva from "../../../assets/img/def-image.png";
 import { SearchInput } from "../search-input/SearchInput";
-import classes from "./Header.module.scss";
 import { Button } from "@mui/material";
 import { LinearProgress } from "@mui/material";
 import { SignIN } from "../../signInBtn/SignIn";
+import { appStatusSelector } from "../../../store/reducers/app-reducer";
+import { useAppSelector } from "../../../store/store";
+import classes from "./Header.module.scss";
 
 export const Header: React.FC = () => {
-  const [status, setStatus] = useState<"loading" | "idle">("loading");
   const [searchCustomer, setSearchCustomer] = useState<string>("");
+
+  const status = useAppSelector(appStatusSelector);
 
   const onSearchHandler = () => {
     console.log("find");

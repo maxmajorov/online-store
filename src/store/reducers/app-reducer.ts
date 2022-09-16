@@ -6,33 +6,32 @@ import {
   handleServerNetworkError,
 } from "../../utils/error-utils";
 import { RootStateType } from "../store";
-import { setIsLoggedInAC } from "./auth-reducer";
 
 // ==== THUNKS ====
 
-export const initializeAppTC = createAsyncThunk(
-  "app/initialize",
-  async (param, thunkAPI) => {
-    const response = await authAPI.authMe();
+// export const initializeAppTC = createAsyncThunk(
+//   "app/initialize",
+//   async (param, thunkAPI) => {
+//     const response = await authAPI.authMe();
 
-    try {
-      thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-      if (response.data.resultCode === 0) {
-        thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-        thunkAPI.dispatch(setIsLoggedInAC());
-        return;
-      } else {
-        handleServerAppError(response.data, thunkAPI.dispatch);
-      }
-    } catch (e) {
-      const err = e as Error | AxiosError<{ error: string }>;
-      handleServerNetworkError(err, thunkAPI.dispatch);
-      return thunkAPI.rejectWithValue({
-        errors: response.data.messages,
-      });
-    }
-  }
-);
+//     try {
+//       thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
+//       if (response.data.resultCode === 0) {
+//         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+//         thunkAPI.dispatch(setIsLoggedInAC());
+//         return;
+//       } else {
+//         handleServerAppError(response.data, thunkAPI.dispatch);
+//       }
+//     } catch (e) {
+//       const err = e as Error | AxiosError<{ error: string }>;
+//       handleServerNetworkError(err, thunkAPI.dispatch);
+//       return thunkAPI.rejectWithValue({
+//         errors: response.data.messages,
+//       });
+//     }
+//   }
+// );
 
 const slice = createSlice({
   name: "app",
@@ -53,11 +52,11 @@ const slice = createSlice({
       state.error = action.payload.error;
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(initializeAppTC.fulfilled, (state) => {
-      state.isInitialized = true;
-    });
-  },
+  // extraReducers: (builder) => {
+  //   builder.addCase(initializeAppTC.fulfilled, (state) => {
+  //     state.isInitialized = true;
+  //   });
+  // },
 });
 
 export const appReducer = slice.reducer;
@@ -65,9 +64,6 @@ export const appReducer = slice.reducer;
 export const { setAppErrorAC, setAppStatusAC } = slice.actions;
 
 // ==== SELECTORS ====
-
-export const appInitializeSelector = (state: RootStateType) =>
-  state.app.isInitialized;
 
 export const appStatusSelector = (state: RootStateType) => state.app.status;
 

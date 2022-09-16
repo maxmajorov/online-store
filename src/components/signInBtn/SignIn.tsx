@@ -8,12 +8,25 @@ import {
   signOut,
 } from "firebase/auth";
 import { SignInFormModal } from "./signInForm/SignInForm";
+import {
+  isSignInWithEmailAndPasswordSelector,
+  signInWithEmailAndPasswordTC,
+} from "../../store/reducers/auth-reducer";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { appStatusSelector } from "../../store/reducers/app-reducer";
 
 export const SignIN: React.FC = (props) => {
   const [open, setOpen] = useState(false);
-  const [authing, setAuthing] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
+
   const auth = getAuth();
+
+  const status = useAppSelector(appStatusSelector);
+
+  const isSignInWithEmailAndPassword = useAppSelector(
+    isSignInWithEmailAndPasswordSelector
+  );
+
+  const dispatch = useAppDispatch();
 
   const signInWithGoogle = async () => {
     setAuthing(true);
@@ -32,16 +45,7 @@ export const SignIN: React.FC = (props) => {
   };
 
   const signInWithEmail = async (data: { email: string; password: string }) => {
-    const { email, password } = data;
-    console.log(data);
-    try {
-      const data = await signInWithEmailAndPassword(auth, email, password);
-      console.log(data.user.uid);
-      setIsAuth(!isAuth);
-    } catch (error: any) {
-      console.log(error.message);
-      // throw error;
-    }
+    dispatch(signInWithEmailAndPasswordTC(data));
   };
 
   const signOutHandler = async () => {
@@ -58,7 +62,7 @@ export const SignIN: React.FC = (props) => {
 
   return (
     <div>
-      {!isAuth ? (
+      {!isSignInWithEmailAndPassword ? (
         <Button
           variant={"contained"}
           color={"primary"}
@@ -80,7 +84,7 @@ export const SignIN: React.FC = (props) => {
       <SignInFormModal
         active={open}
         setActive={setOpen}
-        authing={authing}
+        status={status}
         signInWithEmail={signInWithEmail}
         signInWithGoogle={signInWithGoogle}
       />

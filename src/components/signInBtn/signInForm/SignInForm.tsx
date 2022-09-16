@@ -12,11 +12,12 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
 import classes from "./SignInForm.module.scss";
+import { RequestStatusType } from "../../../store/reducers/app-reducer";
 
 type SignInFormModalType = {
   active: boolean;
   setActive: (value: boolean) => void;
-  authing: boolean;
+  status: RequestStatusType;
   signInWithEmail: (data: { email: string; password: string }) => void;
   signInWithGoogle: () => void;
 };
@@ -24,7 +25,7 @@ type SignInFormModalType = {
 export const SignInFormModal: React.FC<SignInFormModalType> = ({
   active,
   setActive,
-  authing,
+  status,
   signInWithEmail,
   signInWithGoogle,
 }) => {
@@ -128,7 +129,7 @@ export const SignInFormModal: React.FC<SignInFormModalType> = ({
               className={classes.btn}
               color={"primary"}
               style={{ margin: "10px 0" }}
-              // disabled={disableBtn}
+              disabled={status === "loading"}
             >
               Login
             </Button>
@@ -137,7 +138,7 @@ export const SignInFormModal: React.FC<SignInFormModalType> = ({
               variant={"outlined"}
               color={"primary"}
               onClick={() => signInWithGoogle()}
-              disabled={authing}
+              disabled={status === "loading"}
               endIcon={<GoogleIcon />}
               style={{ width: "60%", margin: "auto" }}
             >

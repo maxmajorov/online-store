@@ -7,7 +7,6 @@ import {
   handleServerNetworkError,
 } from "../../utils/error-utils";
 import { RootStateType } from "../store";
-import { setAppStatusAC } from "./app-reducer";
 
 // Типизация state в toolkit Не нужна
 
@@ -17,37 +16,6 @@ interface ValidationErrors {
   errors: Array<string>;
   fieldsErrors: Array<string>;
 }
-
-export const loginTC = createAsyncThunk<
-  undefined,
-  LoginParamsType,
-  {
-    rejectValue: ValidationErrors;
-  }
->("authorization/login", async (data, thunkAPI) => {
-  const response = await authAPI.login(data);
-
-  try {
-    thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-    if (response.data.resultCode === 0) {
-      thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-      return;
-    } else {
-      handleServerAppError(response.data, thunkAPI.dispatch);
-      return thunkAPI.rejectWithValue({
-        errors: response.data.messages,
-        fieldsErrors: [""],
-      });
-    }
-  } catch (e) {
-    const err = e as Error | AxiosError<{ error: string }>;
-    handleServerNetworkError(err, thunkAPI.dispatch);
-    return thunkAPI.rejectWithValue({
-      errors: response.data.messages,
-      fieldsErrors: [""],
-    });
-  }
-});
 
 const slice = createSlice({
   name: "products",
@@ -59,11 +27,6 @@ const slice = createSlice({
       state.isLoggedIn = true;
     },
   },
-  extraReducers(builder) {
-    builder.addCase(loginTC.fulfilled, (state) => {
-      state.isLoggedIn = true;
-    });
-  },
 });
 
 export const productsReducer = slice.reducer;
@@ -71,8 +34,5 @@ export const productsReducer = slice.reducer;
 export const { setIsLoggedInAC } = slice.actions;
 
 // ==== SELECTORS ====
-
-export const isLoggedInSelector = (state: RootStateType) =>
-  state.auth.isLoggedIn;
 
 // ==== TYPES ====
