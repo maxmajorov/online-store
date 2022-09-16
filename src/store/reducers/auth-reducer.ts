@@ -23,7 +23,7 @@ interface ValidationErrors {
 }
 
 export const signInWithEmailAndPasswordTC = createAsyncThunk(
-  "",
+  "auth/signInWithEmal",
   async (data: { email: string; password: string }, thunkAPI) => {
     const { email, password } = data;
 
@@ -49,107 +49,81 @@ export const signInWithEmailAndPasswordTC = createAsyncThunk(
   }
 );
 
-// export const signInWithGoogleTC = createAsyncThunk<
-//   undefined,
-//   undefined,
-//   {
-//     rejectValue: ValidationErrors;
-//   }
-// >("", async (data, thunkAPI) => {
-// const auth = getAuth();
-// const response = await signInWithPopup(auth, new GoogleAuthProvider());
-// try {
-//   const { user } = await signInWithPopup(auth, new GoogleAuthProvider());
-//   console.log(user.uid);
-//   setIsAuth(!isAuth);
-//   setOpen(!open);
-// } catch (error: any) {
-//   console.log(error.message);
-//   // throw error;
-// } finally {
-//   setAuthing(false);
-// }
-// try {
-//   thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-//   if (response.user) {
-//     thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-//     return;
-//   } else {
-//     handleServerAppError(response.user, thunkAPI.dispatch);
-//     return thunkAPI.rejectWithValue({
-//       errors: response.user,
-//       fieldsErrors: [""],
-//     });
-//   }
-// } catch (e) {
-//   const err = e as Error | AxiosError<{ error: string }>;
-//   handleServerNetworkError(err, thunkAPI.dispatch);
-//   return thunkAPI.rejectWithValue({
-//     errors: ["response.user"],
-//     fieldsErrors: [""],
-//   });
-// }
-// });
+export const signInWithGoogleTC = createAsyncThunk(
+  "auth/signInWithGoogle",
+  async (param, thunkAPI) => {
+    const auth = getAuth();
 
-// export const logoutTC = createAsyncThunk(
-//   "authorization/logout",
-//   async (param, thunkAPI) => {
-//     const response = await authAPI.logout();
+    try {
+      thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
+      const response = await signInWithPopup(auth, new GoogleAuthProvider());
 
-//     try {
-//       thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-//       if (response.data.resultCode === 0) {
-//         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-//         return;
-//       } else {
-//         handleServerAppError(response.data, thunkAPI.dispatch);
-//         return thunkAPI.rejectWithValue({
-//           errors: response.data.messages,
-//         });
-//       }
-//     } catch (e) {
-//       const err = e as Error | AxiosError<{ error: string }>;
-//       handleServerNetworkError(err, thunkAPI.dispatch);
-//       return thunkAPI.rejectWithValue({
-//         errors: response.data.messages,
-//       });
-//     }
-//   }
-// );
+      if (response.user.uid) {
+        thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+        return;
+      } else {
+        return thunkAPI.rejectWithValue({
+          errors: "Email not found",
+        });
+      }
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>;
+      handleServerNetworkError(err, thunkAPI.dispatch);
+      return thunkAPI.rejectWithValue({
+        errors: "Email not found",
+      });
+    }
+  }
+);
+
+export const logoutTC = createAsyncThunk(
+  "auth/logout",
+  async (param, thunkAPI) => {
+    const auth = getAuth();
+
+    try {
+      thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
+      await signOut(auth);
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>;
+      handleServerNetworkError(err, thunkAPI.dispatch);
+      return thunkAPI.rejectWithValue({
+        errors: "Not exit",
+      });
+    } finally {
+      thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+    }
+  }
+);
 
 const slice = createSlice({
   name: "auth",
   initialState: {
-    isSignInWithGoogle: false,
-    isSignInWithEmailAndPassword: false,
+    isSignIn: false,
   },
-  reducers: {
-    setIsSignInWithGoogleAC(state) {
-      state.isSignInWithGoogle = true;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
+    builder.addCase(signInWithGoogleTC.fulfilled, (state) => {
+      state.isSignIn = true;
+    });
+
     builder.addCase(signInWithEmailAndPasswordTC.fulfilled, (state) => {
-      state.isSignInWithEmailAndPassword = true;
+      state.isSignIn = true;
+    });
+
+    builder.addCase(logoutTC.fulfilled, (state) => {
+      state.isSignIn = false;
     });
   },
-
-  //   builder.addCase(logoutTC.fulfilled, (state) => {
-  //     state.isLoggedIn = false;
-  //   });
-  // },
 });
 
 export const authReducer = slice.reducer;
 
-export const { setIsSignInWithGoogleAC } = slice.actions;
+// export const { setIsSignInWithGoogleAC, setIsSignInWithEmailAndPasswordAC
+//  } = slice.actions;
 
 // ==== SELECTORS ====
 
-export const isSignInWithGoogleSelector = (state: RootStateType) =>
-  state.auth.isSignInWithGoogle;
-
-export const isSignInWithEmailAndPasswordSelector = (state: RootStateType) =>
-  state.auth.isSignInWithEmailAndPassword;
+export const isSignInSelector = (state: RootStateType) => state.auth.isSignIn;
 
 // ==== TYPES ====

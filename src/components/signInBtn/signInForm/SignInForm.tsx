@@ -12,12 +12,11 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
 import classes from "./SignInForm.module.scss";
-import { RequestStatusType } from "../../../store/reducers/app-reducer";
 
 type SignInFormModalType = {
   active: boolean;
   setActive: (value: boolean) => void;
-  status: RequestStatusType;
+  status: string;
   signInWithEmail: (data: { email: string; password: string }) => void;
   signInWithGoogle: () => void;
 };
