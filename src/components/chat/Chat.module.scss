@@ -9,8 +9,9 @@
   transition: 0.5s;
   box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
   border-radius: 7px;
-  
-  .wrapper {
+ 
+ 
+  &Content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -25,11 +26,92 @@
       padding: 15px
     }
 
+    .chatMessages {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 15px;
 
-  }
-  
+      .messagesBlock {
+        height: 28vh;
+        overflow-y: scroll;
+
+        .message {
+          display: flex;
+          align-items: center;
+          padding: 15px;
+            
+          &_left {
+            justify-content: flex-start;
+          }
+    
+          &_right {
+            justify-content: flex-end;
+          }
+    
+          .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+          }
+    
+          .messageItem {
+            position: relative;
+            padding: 6px;
+            margin-left: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 7px;
+            background-color: #1976d2;
+            box-shadow: 5px 5px 10px 2px rgba(34, 60, 80, 0.2);
+    
+            &::before {
+              position: absolute;
+              content: "";
+              bottom: -3px;
+              left: -7px;
+              transform: scaleY(0.5) rotate(40deg);              
+              width: 20px;
+              height: 20px;
+              background-color: #1976d2;
+            }
+    
+            .nameMessage {
+              padding-left: 10px;
+                   
+              .name {
+                display: block;
+                font-size: 16px;
+                font-weight: 500;
+                color: blue;
+              }
+                    
+              .item {
+                display: block;
+                font-size: 18px;
+                color: #fff;
+              }
+            }
+    
+              .time {
+                padding-left: 15px;
+                padding-top: 40px;
+                font-size: 12px;
+                color: rgba(0, 0, 0, 0.37);
+              }
+           }
+        }
+      } 
+    
+      .textField {
+        margin-top: 15px;
+      }   
+    }
+  }  
 }
 
 .active {
   opacity: 1;
+  pointer-events: all;
 }

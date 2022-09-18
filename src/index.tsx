@@ -8,8 +8,13 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./app/App";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./firebase-config";
+import { getFirestore } from "firebase/firestore";
 
-initializeApp(firebaseConfig);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Cloud Firestore and get a reference to the service
+export const db = getFirestore(app);
 
 ReactDOM.render(
   <BrowserRouter>
