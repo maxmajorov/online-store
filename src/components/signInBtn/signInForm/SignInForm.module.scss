@@ -11,7 +11,7 @@
   opacity: 0;
   pointer-events: none;
   transition: 0.5s;
-  z-index: 100;
+  z-index: 50;
 
  
     &Content {
@@ -24,6 +24,7 @@
       background-color: white;
       max-height: 350px;
       max-width: 350px;
+      z-index: 60;
 
       .title {
         font-size: 28px;

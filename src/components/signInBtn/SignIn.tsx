@@ -40,6 +40,13 @@ export const SignIN: React.FC = (props) => {
 
   return (
     <div>
+      <SignInFormModal
+        active={open}
+        setActive={setOpen}
+        status={status}
+        signInWithEmail={signInWithEmail}
+        signInWithGoogle={signInWithGoogle}
+      />
       {!isSignIn ? (
         <Button
           variant={"contained"}
@@ -58,14 +65,6 @@ export const SignIN: React.FC = (props) => {
           Sign out
         </Button>
       )}
-
-      <SignInFormModal
-        active={open}
-        setActive={setOpen}
-        status={status}
-        signInWithEmail={signInWithEmail}
-        signInWithGoogle={signInWithGoogle}
-      />
     </div>
   );
 };

@@ -1,8 +1,13 @@
-/* .App {
-  padding: 40px 0 0 50px;
-  } */
-
-
-/* .todoList-items  > div {
-  margin-right: 70px;
-} */
+.chatIcon {
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  background-image: url('../assets/img/chat-icon.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  z-index: 10;
+}

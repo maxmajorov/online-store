@@ -1,5 +1,6 @@
 .wrapper {
   position: relative;
+  z-index: -1;
 
   .productsList {
     display: grid;
@@ -71,6 +72,7 @@
     width: 60px;
     height: 60px;
     cursor: pointer;
+
   }
    
 }
