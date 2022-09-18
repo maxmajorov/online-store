@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import defProdImg from "../../assets/img/defProdLogo.png";
-import { Button } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 import { Grade } from "../grade/Grade";
 import classes from "./OnlineStore.module.scss";
+import { Chat } from "../chat/Chat";
 
 type ProductsType = {
   id: string;
@@ -59,6 +61,8 @@ const productsList: Array<ProductsType> = [
 ];
 
 export const OnlineStore: React.FC = React.memo(() => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className={classes.wrapper}>
       <h3>PRODUCTS</h3>
@@ -79,6 +83,16 @@ export const OnlineStore: React.FC = React.memo(() => {
           </div>
         ))}
       </div>
+
+      {!open ? (
+        <>
+          <Tooltip title="Write us!">
+            <div className={classes.chatIcon} onClick={() => setOpen(!open)} />
+          </Tooltip>
+        </>
+      ) : (
+        <Chat active={open} setActive={setOpen} />
+      )}
     </div>
   );
 });

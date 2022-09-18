@@ -1,4 +1,5 @@
 .wrapper {
+  position: relative;
 
   .productsList {
     display: grid;
@@ -57,6 +58,19 @@
         margin-top: 10px;
       }
     }
+  }
+
+  .chatIcon {
+    position: fixed;
+    bottom: 30px;
+    right: 40px;
+    background-image: url('../../assets/img/chat-icon.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
   }
    
 }

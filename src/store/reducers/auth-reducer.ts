@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import {
   handleServerAppError,
@@ -33,6 +33,7 @@ export const signInWithEmailAndPasswordTC = createAsyncThunk(
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (response.user.uid) {
         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+        thunkAPI.dispatch(setAuthInstanceAC({ auth }));
         return;
       } else {
         return thunkAPI.rejectWithValue({
@@ -60,6 +61,7 @@ export const signInWithGoogleTC = createAsyncThunk(
 
       if (response.user.uid) {
         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+        thunkAPI.dispatch(setAuthInstanceAC({ auth }));
         return;
       } else {
         return thunkAPI.rejectWithValue({
@@ -100,8 +102,13 @@ const slice = createSlice({
   name: "auth",
   initialState: {
     isSignIn: false,
+    auth: {},
   },
-  reducers: {},
+  reducers: {
+    setAuthInstanceAC(state, action: PayloadAction<{ auth: any }>) {
+      state.auth = action.payload.auth;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(signInWithGoogleTC.fulfilled, (state) => {
       state.isSignIn = true;
@@ -119,11 +126,12 @@ const slice = createSlice({
 
 export const authReducer = slice.reducer;
 
-// export const { setIsSignInWithGoogleAC, setIsSignInWithEmailAndPasswordAC
-//  } = slice.actions;
+export const { setAuthInstanceAC } = slice.actions;
 
 // ==== SELECTORS ====
 
 export const isSignInSelector = (state: RootStateType) => state.auth.isSignIn;
+
+export const authSelector = (state: RootStateType) => state.auth.auth;
 
 // ==== TYPES ====
