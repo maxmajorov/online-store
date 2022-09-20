@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import defaultAva from "../../assets/img/def-image.png";
+import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import { CircularProgress } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import CloseSharpIcon from "@mui/icons-material/CloseSharp";
-import {
-  addDoc,
-  collection,
-  orderBy,
-  query,
-  serverTimestamp,
-} from "firebase/firestore";
+import SendIcon from "@mui/icons-material/Send";
+import { collection, orderBy, query } from "firebase/firestore";
 import { db } from "../..";
 import { appStatusSelector } from "../../store/reducers/app-reducer";
 import { currentUserSelector } from "../../store/reducers/auth-reducer";
@@ -51,6 +48,12 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
     <div
       className={active ? `${classes.chat} ${classes.active}` : classes.modal}
     >
+      {!messages && (
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      )}
+
       <div className={classes.chatContent}>
         <div className={classes.heading}>
           <h3>Ask questions</h3>
@@ -80,9 +83,8 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
                           : `${classes.message} ${classes.message_left}`
                       }
                     >
-                      <img
+                      <Avatar
                         src={mes.photoURL ? mes.photoURL : defaultAva}
-                        className={classes.avatar}
                         alt="avatar"
                       />
                       <div className={classes.messageItem}>
@@ -114,13 +116,13 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
               />
               <Button
                 variant={"contained"}
-                size={"large"}
                 color={"primary"}
                 style={{ marginTop: "15px" }}
+                endIcon={<SendIcon />}
                 disabled={status === "loading"}
                 onClick={sendMessage}
               >
-                submit
+                send
               </Button>
             </div>
           </div>

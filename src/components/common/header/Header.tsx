@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import Logo from "../../../assets/img/logo.svg";
 import defaultAva from "../../../assets/img/def-image.png";
 import { SearchInput } from "../search-input/SearchInput";
-// import { Button } from "@mui/material";
 import { LinearProgress } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import { SignIN } from "../../signInBtn/SignIn";
 import { appStatusSelector } from "../../../store/reducers/app-reducer";
 import { useAppSelector } from "../../../store/store";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
 import classes from "./Header.module.scss";
+import { currentUserSelector } from "../../../store/reducers/auth-reducer";
 
 export const Header: React.FC = () => {
   const [searchCustomer, setSearchCustomer] = useState<string>("");
 
   const status = useAppSelector(appStatusSelector);
+  const currentUser = useAppSelector(currentUserSelector);
 
   const onSearchHandler = () => {
     console.log("find");
@@ -46,7 +48,10 @@ export const Header: React.FC = () => {
           <SignIN />
 
           <div className={classes.controlsAvatar}>
-            <img src={defaultAva} alt="avatar" />
+            <Avatar
+              src={currentUser.photoURL ? currentUser.photoURL : defaultAva}
+              alt="avatar"
+            />
           </div>
         </div>
       </div>
