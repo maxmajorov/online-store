@@ -57,7 +57,6 @@
     
           .messageItem {
             position: relative;
-            padding: 6px;
             margin-left: 15px;
             display: flex;
             justify-content: space-between;
@@ -78,7 +77,7 @@
             }
     
             .nameMessage {
-              padding-left: 10px;
+              padding: 10px;
                    
               .name {
                 display: block;

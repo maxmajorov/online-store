@@ -5,7 +5,13 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import CloseSharpIcon from "@mui/icons-material/CloseSharp";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../..";
 import { appStatusSelector } from "../../store/reducers/app-reducer";
 import { currentUserSelector } from "../../store/reducers/auth-reducer";
@@ -19,15 +25,13 @@ type ChatType = {
 
 export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
   const [value, setValue] = useState("");
-  const [messages, loading] = useCollectionData(collection(db, "messages"));
+
+  const [messages] = useCollectionData(
+    query(collection(db, "messages"), orderBy("createdAt"))
+  );
 
   const status = useAppSelector(appStatusSelector);
   const currentUser = useAppSelector(currentUserSelector);
-
-  // console.log(
-  //   messages &&
-  //     new Date(messages[0].createdAt.seconds * 1000).toLocaleString().split(",")[1]
-  // );
 
   useEffect(() => {
     messagesAncorRef.current?.scrollIntoView();
@@ -76,44 +80,42 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
           <div className={classes.chatMessages}>
             <div className={classes.messagesBlock}>
               {messages &&
-                messages
-                  .sort((a, b) => a.createdAt.seconds - b.createdAt.seconds)
-                  .map(
-                    (
-                      mes,
-                      ind //заменить на id
-                    ) => (
-                      <div
-                        key={ind}
-                        className={
-                          mes.uid === currentUser.uid
-                            ? `${classes.message} ${classes.message_right}`
-                            : `${classes.message} ${classes.message_left}`
-                        }
-                      >
-                        <img
-                          src={mes.photoURL ? mes.photoURL : defaultAva}
-                          className={classes.avatar}
-                          alt="avatar"
-                        />
-                        <div className={classes.messageItem}>
-                          <div className={classes.nameMessage}>
-                            <span className={classes.name}>
-                              {mes.name ? mes.name : "anonymous"}
-                            </span>
-                            <span className={classes.item}>{mes.text}</span>
-                          </div>
-                          {/* <div className={classes.time}>
+                messages.map(
+                  (
+                    mes,
+                    ind //заменить на id
+                  ) => (
+                    <div
+                      key={ind}
+                      className={
+                        mes.uid === currentUser.uid
+                          ? `${classes.message} ${classes.message_right}`
+                          : `${classes.message} ${classes.message_left}`
+                      }
+                    >
+                      <img
+                        src={mes.photoURL ? mes.photoURL : defaultAva}
+                        className={classes.avatar}
+                        alt="avatar"
+                      />
+                      <div className={classes.messageItem}>
+                        <div className={classes.nameMessage}>
+                          <span className={classes.name}>
+                            {mes.name ? mes.name : "anonymous"}
+                          </span>
+                          <span className={classes.item}>{mes.text}</span>
+                        </div>
+                        {/* <div className={classes.time}>
                           {
                             new Date(mes.createdAt.seconds * 1000)
                               .toLocaleString()
                               .split(",")[1]
                           }
                         </div> */}
-                        </div>
                       </div>
-                    )
-                  )}
+                    </div>
+                  )
+                )}
               <div ref={messagesAncorRef}></div>
             </div>
             <div className={classes.textField}>
@@ -121,7 +123,6 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
                 fullWidth
                 variant="outlined"
                 value={value}
-                // style={}
                 onChange={(e) => setValue(e.currentTarget.value)}
               />
               <Button
