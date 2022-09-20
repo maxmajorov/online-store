@@ -1,64 +1,16 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from "react";
-import { authSelector } from "../../store/reducers/auth-reducer";
+import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "../../store/store";
 import defaultAva from "../../assets/img/def-image.png";
-import {
-  Button,
-  FormControl,
-  FormGroup,
-  IconButton,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-} from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import TextField from "@mui/material/TextField";
 import CloseSharpIcon from "@mui/icons-material/CloseSharp";
-import classes from "./Chat.module.scss";
-
-import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../..";
-
-const messages = [
-  {
-    _id: 1,
-    user: {
-      _id: "2",
-      name: "max",
-    },
-    message: "hello",
-  },
-  {
-    _id: 2,
-    user: {
-      _id: "2",
-      name: "max",
-    },
-    message: "hello",
-  },
-  {
-    _id: 3,
-    user: {
-      _id: "2",
-      name: "max",
-    },
-    message: "hello",
-  },
-  {
-    _id: 4,
-    user: {
-      _id: "2",
-      name: "max",
-    },
-    message: "hello",
-  },
-  {
-    _id: 5,
-    user: {
-      _id: "2",
-      name: "max",
-    },
-    message: "hello",
-  },
-];
+import { appStatusSelector } from "../../store/reducers/app-reducer";
+import { currentUserSelector } from "../../store/reducers/auth-reducer";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import classes from "./Chat.module.scss";
 
 type ChatType = {
   active: boolean;
@@ -66,21 +18,16 @@ type ChatType = {
 };
 
 export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
-  const [name, setName] = useState<string>("");
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState("");
+  const [messages, loading] = useCollectionData(collection(db, "messages"));
 
-  const userName = "Max";
-  const userID = 1;
+  const status = useAppSelector(appStatusSelector);
+  const currentUser = useAppSelector(currentUserSelector);
 
-  // // add new user
-  // const changeNameHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setName(event.currentTarget.value);
-  // };
-
-  // const setNewUser = () => {
-  //   // dispatch(setClientNameTC(name));
-  //   setName("");
-  // };
+  // console.log(
+  //   messages &&
+  //     new Date(messages[0].createdAt.seconds * 1000).toLocaleString().split(",")[1]
+  // );
 
   useEffect(() => {
     messagesAncorRef.current?.scrollIntoView();
@@ -89,27 +36,21 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
   const messagesAncorRef = useRef<HTMLDivElement>(null);
 
   const sendMessage = async () => {
-    // firestore.collection("message").add({
-    //   uid: user.uid,
-    //   displayName: user.displayName,
-    //   photoURL: user.photoURL,
-    //   text: value,
-    //   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    // });
-    console.log(collection(db, "users"));
+    // @ts-ignore
+    const { uid, photoURL, displayName, email } = currentUser;
 
     try {
-      const docRef = await addDoc(collection(db, "users"), {
-        first: "Max",
-        last: "Predko",
-        born: 1989,
+      const docRef = await addDoc(collection(db, "messages"), {
+        uid,
+        name: displayName,
+        email,
+        photoURL,
+        text: value,
+        createdAt: serverTimestamp(),
       });
-      // await setDoc(doc(db, "users", "LA"), {
-      //   name: "Los Angeles",
-      //   state: "CA",
-      //   country: "USA",
-      // });
+
       console.log("Document written with ID: ", docRef.id);
+      setValue("");
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -127,75 +68,52 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
           </IconButton>
         </div>
 
-        {!userName ? (
+        {!currentUser.uid ? (
           <div style={{ paddingTop: "20px", textAlign: "center" }}>
-            <FormGroup>
-              <FormControl sx={{ m: 2, width: "320px" }} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-name">Name</InputLabel>
-                <OutlinedInput
-                  placeholder={"Enter your name"}
-                  label="Name"
-                  // {...formik.getFieldProps("email")}
-                />
-                {/* {formik.touched.email && formik.errors.email ? (
-              <div style={{ color: "red" }}>{formik.errors.email}</div>
-            ) : null} */}
-              </FormControl>
-              <FormControl sx={{ m: 2, width: "320px" }} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-email">
-                  Email
-                </InputLabel>
-                <OutlinedInput
-                  placeholder={"Enter email"}
-                  label="Email"
-                  // {...formik.getFieldProps("email")}
-                />
-                {/* {formik.touched.email && formik.errors.email ? (
-              <div style={{ color: "red" }}>{formik.errors.email}</div>
-            ) : null} */}
-              </FormControl>
-
-              <Button
-                type={"submit"}
-                variant={"outlined"}
-                size={"large"}
-                className={classes.btn}
-                color={"primary"}
-                style={{ width: "50%", margin: "0 auto" }}
-                // disabled={status === "loading"}
-              >
-                submit
-              </Button>
-            </FormGroup>
+            Please sign in
           </div>
         ) : (
           <div className={classes.chatMessages}>
             <div className={classes.messagesBlock}>
-              {messages.map((mes) => (
-                <div
-                  key={mes._id}
-                  className={
-                    mes.user._id === userID.toString()
-                      ? `${classes.message} ${classes.message_right}`
-                      : `${classes.message} ${classes.message_left}`
-                  }
-                >
-                  <img
-                    src={defaultAva}
-                    className={classes.avatar}
-                    alt="avatar"
-                  />
-                  <div className={classes.messageItem}>
-                    <div className={classes.nameMessage}>
-                      <span className={classes.name}>{mes.user.name}</span>
-                      <span className={classes.item}>{mes.message}</span>
-                    </div>
-                    <div className={classes.time}>
-                      {new Date().toLocaleTimeString()}
-                    </div>
-                  </div>
-                </div>
-              ))}
+              {messages &&
+                messages
+                  .sort((a, b) => a.createdAt.seconds - b.createdAt.seconds)
+                  .map(
+                    (
+                      mes,
+                      ind //заменить на id
+                    ) => (
+                      <div
+                        key={ind}
+                        className={
+                          mes.uid === currentUser.uid
+                            ? `${classes.message} ${classes.message_right}`
+                            : `${classes.message} ${classes.message_left}`
+                        }
+                      >
+                        <img
+                          src={mes.photoURL ? mes.photoURL : defaultAva}
+                          className={classes.avatar}
+                          alt="avatar"
+                        />
+                        <div className={classes.messageItem}>
+                          <div className={classes.nameMessage}>
+                            <span className={classes.name}>
+                              {mes.name ? mes.name : "anonymous"}
+                            </span>
+                            <span className={classes.item}>{mes.text}</span>
+                          </div>
+                          {/* <div className={classes.time}>
+                          {
+                            new Date(mes.createdAt.seconds * 1000)
+                              .toLocaleString()
+                              .split(",")[1]
+                          }
+                        </div> */}
+                        </div>
+                      </div>
+                    )
+                  )}
               <div ref={messagesAncorRef}></div>
             </div>
             <div className={classes.textField}>
@@ -211,7 +129,7 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
                 size={"large"}
                 color={"primary"}
                 style={{ marginTop: "15px" }}
-                // disabled={status === "loading"}
+                disabled={status === "loading"}
                 onClick={sendMessage}
               >
                 submit
@@ -223,3 +141,5 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
     </div>
   );
 });
+
+// ==== TYPES ====

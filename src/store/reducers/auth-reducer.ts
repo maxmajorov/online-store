@@ -12,6 +12,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  User,
 } from "firebase/auth";
 
 // Типизация state в toolkit Не нужна
@@ -33,7 +34,7 @@ export const signInWithEmailAndPasswordTC = createAsyncThunk(
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (response.user.uid) {
         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-        thunkAPI.dispatch(setAuthInstanceAC({ auth }));
+        thunkAPI.dispatch(setAuthInstanceAC({ currentUser: auth.currentUser }));
         return;
       } else {
         return thunkAPI.rejectWithValue({
@@ -61,7 +62,7 @@ export const signInWithGoogleTC = createAsyncThunk(
 
       if (response.user.uid) {
         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-        thunkAPI.dispatch(setAuthInstanceAC({ auth }));
+        thunkAPI.dispatch(setAuthInstanceAC({ currentUser: auth.currentUser }));
         return;
       } else {
         return thunkAPI.rejectWithValue({
@@ -102,11 +103,15 @@ const slice = createSlice({
   name: "auth",
   initialState: {
     isSignIn: false,
-    auth: {},
+    currentUser: {} as User,
   },
   reducers: {
-    setAuthInstanceAC(state, action: PayloadAction<{ auth: any }>) {
-      state.auth = action.payload.auth;
+    setAuthInstanceAC(
+      state,
+      action: PayloadAction<{ currentUser: User | null }>
+    ) {
+      //@ts-ignore
+      state.currentUser = action.payload.currentUser;
     },
   },
   extraReducers(builder) {
@@ -132,6 +137,27 @@ export const { setAuthInstanceAC } = slice.actions;
 
 export const isSignInSelector = (state: RootStateType) => state.auth.isSignIn;
 
-export const authSelector = (state: RootStateType) => state.auth.auth;
+export const currentUserSelector = (state: RootStateType) =>
+  state.auth.currentUser;
 
 // ==== TYPES ====
+
+type UserType = {
+  accessToken: string;
+  auth: any;
+  displayName: string;
+  email: string;
+  emailVerified: boolean;
+  inAnonymous: boolean;
+  metadata: any;
+  phoneNumber: string;
+  photoURL: string;
+  proactiveRefresh: any;
+  providerDate: any;
+  providerId: string;
+  reloadListener: any;
+  reloadUserInfo: any;
+  stsTokenManager: any;
+  tenantId: string;
+  uid: string;
+};

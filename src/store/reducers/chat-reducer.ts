@@ -76,6 +76,4 @@ export const chatReducer = slice.reducer;
 
 export const isSignInSelector = (state: RootStateType) => state.auth.isSignIn;
 
-export const authSelector = (state: RootStateType) => state.auth.auth;
-
 // ==== TYPES ====
