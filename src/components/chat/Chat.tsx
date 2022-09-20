@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import defaultAva from "../../assets/img/def-image.png";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -17,6 +17,7 @@ import { appStatusSelector } from "../../store/reducers/app-reducer";
 import { currentUserSelector } from "../../store/reducers/auth-reducer";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import classes from "./Chat.module.scss";
+import { sendNewMessageTC } from "../../store/reducers/chat-reducer";
 
 type ChatType = {
   active: boolean;
@@ -33,31 +34,17 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
   const status = useAppSelector(appStatusSelector);
   const currentUser = useAppSelector(currentUserSelector);
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     messagesAncorRef.current?.scrollIntoView();
   }, [messages]);
 
   const messagesAncorRef = useRef<HTMLDivElement>(null);
 
-  const sendMessage = async () => {
-    // @ts-ignore
-    const { uid, photoURL, displayName, email } = currentUser;
-
-    try {
-      const docRef = await addDoc(collection(db, "messages"), {
-        uid,
-        name: displayName,
-        email,
-        photoURL,
-        text: value,
-        createdAt: serverTimestamp(),
-      });
-
-      console.log("Document written with ID: ", docRef.id);
-      setValue("");
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+  const sendMessage = () => {
+    dispatch(sendNewMessageTC(value));
+    setValue("");
   };
 
   return (

@@ -6,46 +6,38 @@ import {
 } from "../../utils/error-utils";
 import { RootStateType } from "../store";
 import { setAppStatusAC } from "./app-reducer";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../..";
 
 // Типизация state в toolkit Не нужна
 
 // ==== THUNKS ====
 
-interface ValidationErrors {
-  errors: string;
-}
-
-export const signInWithEmailAndPasswordTC = createAsyncThunk(
-  "auth/signInWithEmal",
-  async (data: { email: string; password: string }, thunkAPI) => {
-    const { email, password } = data;
+export const sendNewMessageTC = createAsyncThunk(
+  "chat/sendNewMessage",
+  async (value: string, thunkAPI) => {
+    //@ts-ignore
+    const { uid, photoURL, displayName, email } = getAuth().currentUser;
 
     try {
       thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-      const auth = getAuth();
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      if (response.user.uid) {
-        thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-
-        return;
-      } else {
-        return thunkAPI.rejectWithValue({
-          errors: "Invalid email or password",
-        });
-      }
+      await addDoc(collection(db, "messages"), {
+        uid,
+        name: displayName,
+        email,
+        photoURL,
+        text: value,
+        createdAt: serverTimestamp(),
+      });
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>;
       handleServerNetworkError(err, thunkAPI.dispatch);
       return thunkAPI.rejectWithValue({
         errors: "Invalid email or password",
       });
+    } finally {
+      thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
     }
   }
 );
@@ -53,24 +45,19 @@ export const signInWithEmailAndPasswordTC = createAsyncThunk(
 const slice = createSlice({
   name: "chat",
   initialState: {
-    userName: "",
-    userID: "",
+    messages: {},
   },
   reducers: {
-    // setAuthInstanceAC(state, action: PayloadAction<{ auth: any }>) {
-    //   state.auth = action.payload.auth;
-    // },
+    sendNewMessageAC(state, action: PayloadAction<{ value: string }>) {
+      //@ts-ignore
+      state.currentUser = action.payload.currentUser;
+    },
   },
-  extraReducers(builder) {
-    // builder.addCase(signInWithGoogleTC.fulfilled, (state) => {
-    //   state.isSignIn = true;
-    // });
-  },
+  extraReducers(builder) {},
 });
 
 export const chatReducer = slice.reducer;
-
-// export const { setAuthInstanceAC } = slice.actions;
+export const { sendNewMessageAC } = slice.actions;
 
 // ==== SELECTORS ====
 

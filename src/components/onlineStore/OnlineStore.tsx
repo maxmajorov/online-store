@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import defProdImg from "../../assets/img/defProdLogo.png";
-import { Button, Tooltip } from "@mui/material";
+import { Button } from "@mui/material";
 import { Grade } from "../grade/Grade";
 import classes from "./OnlineStore.module.scss";
-import { Chat } from "../chat/Chat";
 
 type ProductsType = {
   id: string;

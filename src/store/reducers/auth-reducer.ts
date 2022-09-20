@@ -19,10 +19,6 @@ import {
 
 // ==== THUNKS ====
 
-interface ValidationErrors {
-  errors: string;
-}
-
 export const signInWithEmailAndPasswordTC = createAsyncThunk(
   "auth/signInWithEmal",
   async (data: { email: string; password: string }, thunkAPI) => {
@@ -141,23 +137,3 @@ export const currentUserSelector = (state: RootStateType) =>
   state.auth.currentUser;
 
 // ==== TYPES ====
-
-type UserType = {
-  accessToken: string;
-  auth: any;
-  displayName: string;
-  email: string;
-  emailVerified: boolean;
-  inAnonymous: boolean;
-  metadata: any;
-  phoneNumber: string;
-  photoURL: string;
-  proactiveRefresh: any;
-  providerDate: any;
-  providerId: string;
-  reloadListener: any;
-  reloadUserInfo: any;
-  stsTokenManager: any;
-  tenantId: string;
-  uid: string;
-};
