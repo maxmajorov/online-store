@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import defImg from "../../assets/img/default-image.png";
 import { Button } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
@@ -7,14 +8,23 @@ import { collection, orderBy, query } from "firebase/firestore";
 import { db } from "../..";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import classes from "./OnlineStore.module.scss";
+import { useAppDispatch } from "../../store/store";
+import { setAppStatusAC } from "../../store/reducers/app-reducer";
 
 export const OnlineStore: React.FC = React.memo(() => {
+  const { state } = useLocation();
+
+  const dispatch = useAppDispatch();
+
   const [products] = useCollectionData(query(collection(db, "products")));
 
-  // add to navigate state form size models for view on heding
+  !products
+    ? dispatch(setAppStatusAC({ status: "loading" }))
+    : dispatch(setAppStatusAC({ status: "idle" }));
+
   return (
     <div className={classes.wrapper}>
-      <h3>Car models 1:10 </h3>
+      <h3>Car models {state} </h3>
 
       <div>sorting... add in future)))</div>
       <div className={classes.productsList}>

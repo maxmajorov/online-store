@@ -11,8 +11,12 @@ export const MainPage: React.FC = React.memo(() => {
     <div className={classes.wrapper}>
       <h1>Car models</h1>
       <div className={classes.sidebar}>
-        <Button onClick={() => navigate("models_1-10")}>models 1:10</Button>
-        <Button onClick={() => navigate("error404")}>models 1:16</Button>
+        <Button onClick={() => navigate("models_1-10", { state: "1:10" })}>
+          models 1:10
+        </Button>
+        <Button onClick={() => navigate("models_1-16", { state: "1:16" })}>
+          models 1:16
+        </Button>
         <Button onClick={() => navigate("error404")}>models 1:18</Button>
         <Button onClick={() => navigate("error404")}>models 1:24</Button>
         <Button onClick={() => navigate("error404")}>models 1:43</Button>

@@ -47,7 +47,7 @@ export const App = () => {
           <Route path="/cart" element={<Cart />} />
           {/* <Route path="/login" element={<LoginForm />} /> */}
           <Route
-            path="/error404"
+            path="/*"
             element={
               <WithLayout>
                 <Error404 />
