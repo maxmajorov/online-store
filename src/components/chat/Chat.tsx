@@ -3,10 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import defaultAva from "../../assets/img/def-image.png";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import { CircularProgress } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import CloseSharpIcon from "@mui/icons-material/CloseSharp";
 import SendIcon from "@mui/icons-material/Send";
 import { collection, orderBy, query } from "firebase/firestore";
 import { db } from "../..";
@@ -18,10 +16,9 @@ import { sendNewMessageTC } from "../../store/reducers/chat-reducer";
 
 type ChatType = {
   active: boolean;
-  setActive: (value: boolean) => void;
 };
 
-export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
+export const Chat: React.FC<ChatType> = React.memo(({ active }) => {
   const [value, setValue] = useState("");
 
   const [messages] = useCollectionData(
@@ -56,10 +53,11 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
 
       <div className={classes.chatContent}>
         <div className={classes.heading}>
-          <h3>Ask questions</h3>
-          <IconButton onClick={() => setActive(!active)}>
-            <CloseSharpIcon />
-          </IconButton>
+          <h3>Chat with us</h3>
+          <p>
+            Hello! Let us know if you have a specific question, or give an idea
+            of what you're looking for. We're happy to make recommendations.
+          </p>
         </div>
 
         {!currentUser.uid ? (

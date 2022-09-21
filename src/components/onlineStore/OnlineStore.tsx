@@ -61,7 +61,7 @@ const productsList: Array<ProductsType> = [
 export const OnlineStore: React.FC = React.memo(() => {
   return (
     <div className={classes.wrapper}>
-      <h3>PRODUCTS in store</h3>
+      <h3>Сars at auction</h3>
 
       <div className={classes.productsList}>
         {productsList.map((pr) => (

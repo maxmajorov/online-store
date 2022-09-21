@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Container, Tooltip } from "@mui/material";
-import "./App.css";
+import React, { useState } from "react";
+import { Container } from "@mui/material";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import IconButton from "@mui/material/IconButton";
 import { Route, Routes } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { Cart } from "../components/cart/Cart";
@@ -9,6 +10,7 @@ import { ErrorSnackbar } from "../components/common/ErrorSnackbar/ErrorSnackbar"
 import { Header } from "../components/common/header/Header";
 import { WithLayout } from "../components/common/withLayout/WithLayout";
 import { Chat } from "../components/chat/Chat";
+import "./App.css";
 
 export const App = () => {
   const [open, setOpen] = useState(false);
@@ -37,13 +39,18 @@ export const App = () => {
         </Routes>
       </Container>
       {!open ? (
-        <>
-          <Tooltip title="Write us!">
-            <div className="chatIcon" onClick={() => setOpen(!open)} />
-          </Tooltip>
-        </>
+        <div className="chatIcon" onClick={() => setOpen(!open)}>
+          Chat with us
+        </div>
       ) : (
-        <Chat active={open} setActive={setOpen} />
+        <div>
+          <div className="closeIcon" onClick={() => setOpen(!open)}>
+            <IconButton size={"large"} style={{ color: "white" }}>
+              <CloseOutlinedIcon fontSize="inherit" />
+            </IconButton>
+          </div>
+          <Chat active={open} />
+        </div>
       )}
     </div>
   );

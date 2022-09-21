@@ -1,13 +1,49 @@
 .chatIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   bottom: 30px;
   right: 40px;
-  background-image: url('../assets/img/chat-icon.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  width: 140px;
+  height: 60px;
+  background-color: black;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 30px;
+  cursor: pointer;
+  animation-name: chat-fade-in;
+  animation-duration: 0.5s; 
+  /* z-index: 10; */
+}
+
+.closeIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
   width: 60px;
   height: 60px;
+  background-color: black;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 50%;
   cursor: pointer;
-  z-index: 10;
+  animation-name: chat-fade-in;
+  animation-duration: 0.5s ;
+  /* z-index: 10; */
+}
+
+@keyframes chat-fade-in {
+  0% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
