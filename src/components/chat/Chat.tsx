@@ -28,6 +28,8 @@ export const Chat: React.FC<ChatType> = React.memo(({ active }) => {
   const status = useAppSelector(appStatusSelector);
   const currentUser = useAppSelector(currentUserSelector);
 
+  console.log(currentUser);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {

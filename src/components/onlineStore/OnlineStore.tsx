@@ -1,90 +1,50 @@
 import React from "react";
-import defProdImg from "../../assets/img/defProdLogo.png";
+import defImg from "../../assets/img/default-image.png";
 import { Button } from "@mui/material";
-import { Grade } from "../grade/Grade";
+import DoneIcon from "@mui/icons-material/Done";
+import CloseIcon from "@mui/icons-material/Close";
 import { collection, orderBy, query } from "firebase/firestore";
 import { db } from "../..";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import classes from "./OnlineStore.module.scss";
 
-type ProductsType = {
-  id: string;
-  image?: string;
-  title: string;
-  price: number;
-  description: string;
-  grade: number;
-};
-
-const productsList: Array<ProductsType> = [
-  {
-    id: "1",
-    title: "Vintage Typewritter to post awesome stories",
-    price: 49.5,
-    description: "Eligible for Shipping To Mars or something else",
-    grade: 4,
-  },
-  {
-    id: "2",
-    title: "Vintage Typewritter to post awesome stories",
-    price: 9.5,
-    description: "Eligible for Shipping To Mars or something else",
-    grade: 5,
-  },
-  {
-    id: "3",
-    title: "Vintage Typewritter to post awesome stories",
-    price: 34.5,
-    description: "Eligible for Shipping To Mars or something else",
-    grade: 0,
-  },
-  {
-    id: "4",
-    title: "Vintage Typewritter to post awesome stories",
-    price: 23.5,
-    description: "Eligible for Shipping To Mars or something else",
-    grade: 2,
-  },
-  {
-    id: "5",
-    title: "Vintage Typewritter to post awesome stories",
-    price: 41.1,
-    description: "Eligible for Shipping To Mars or something else",
-    grade: 1,
-  },
-  {
-    id: "6",
-    title: "Vintage Typewritter to post awesome stories",
-    price: 55.2,
-    description: "Eligible for Shipping To Mars or something else",
-    grade: 5,
-  },
-];
-
 export const OnlineStore: React.FC = React.memo(() => {
-  const [products] = useCollectionData(query(collection(db, "messages")));
+  const [products] = useCollectionData(query(collection(db, "products")));
 
-  console.log(products);
-
+  // add to navigate state form size models for view on heding
   return (
     <div className={classes.wrapper}>
-      <h3>Car models 1:16 </h3>
+      <h3>Car models 1:10 </h3>
 
+      <div>sorting... add in future)))</div>
       <div className={classes.productsList}>
         {products &&
           products.map((model, ind) => (
             <div key={ind} className={classes.item}>
-              <img
-                src={model.image ? model.image : defProdImg}
-                alt={"product-item"}
-              />
+              <div className={classes.item_image}>
+                <img
+                  src={model.image ? model.image : defImg}
+                  alt={"product-item"}
+                />
+              </div>
+
               <div
                 className={classes.item_title}
-              >{`${model.brand} ${model.model}`}</div>
+              >{`${model.brand} ${model.model}, ${model.year}`}</div>
+              <div
+                className={classes.item_description}
+              >{`${model.body} / ${model.gear} / ${model.fuel}`}</div>
+              <div className={classes.item_inStore}>
+                In stock
+                {model.inStore ? (
+                  <DoneIcon color="success" />
+                ) : (
+                  <CloseIcon color="error" />
+                )}
+              </div>
               <div className={classes.item_price}>${model.price}</div>
 
               <div className={classes.controls}>
-                <Grade value={model.grade} />
                 <Button variant="outlined" style={{ display: "block" }}>
                   buy
                 </Button>

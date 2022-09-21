@@ -13,8 +13,8 @@
     .item {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      justify-content: space-between;
+      // align-items: center;
       padding: 16px;
            
       &:hover {
@@ -24,18 +24,24 @@
 
       &_title {
         margin-top: 10px;
-        font-size: 16px;
+        font-size: 18px;
+        font-weight: 500;
         line-height: 150%;
         letter-spacing: 1px;
       }
 
       &_price {
         margin: 8px 0;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 700;
         line-height: 150%;
         letter-spacing: 1px;       
 
+      }
+
+      &_inStore {
+        display: flex;
+        align-items: center;
       }
 
       &_description {
@@ -45,9 +51,14 @@
         letter-spacing: 1px;
       }
 
-      img {
-        width: 180px;
-        height: auto;  
+      &_image {
+        width: 220px;
+        height: 130px;
+               
+        &>img {
+          width: 220px;
+          // height: 130px;
+        }
         
       }
 
