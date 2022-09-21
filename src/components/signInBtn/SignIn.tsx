@@ -9,6 +9,7 @@ import {
 } from "../../store/reducers/auth-reducer";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { appStatusSelector } from "../../store/reducers/app-reducer";
+import classes from "./SignIn.module.scss";
 
 export const SignIN: React.FC = (props) => {
   const [open, setOpen] = useState(false);
@@ -48,22 +49,13 @@ export const SignIN: React.FC = (props) => {
         signInWithGoogle={signInWithGoogle}
       />
       {!isSignIn ? (
-        <Button
-          variant={"contained"}
-          color={"primary"}
-          disabled={status === "loading"}
-          onClick={() => setOpen(!open)}
-        >
+        <div className={classes.links} onClick={() => setOpen(!open)}>
           Sign in
-        </Button>
+        </div>
       ) : (
-        <Button
-          variant={"outlined"}
-          onClick={signOutHandler}
-          disabled={status === "loading"}
-        >
+        <div className={classes.links} onClick={signOutHandler}>
           Sign out
-        </Button>
+        </div>
       )}
     </div>
   );

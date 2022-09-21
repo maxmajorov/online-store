@@ -48,7 +48,7 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
     <div
       className={active ? `${classes.chat} ${classes.active}` : classes.modal}
     >
-      {!messages && (
+      {currentUser.uid && !messages && (
         <div className={classes.progress}>
           <CircularProgress />
         </div>
@@ -63,7 +63,7 @@ export const Chat: React.FC<ChatType> = React.memo(({ active, setActive }) => {
         </div>
 
         {!currentUser.uid ? (
-          <div style={{ paddingTop: "20px", textAlign: "center" }}>
+          <div style={{ paddingTop: "150px", textAlign: "center" }}>
             Please sign in
           </div>
         ) : (

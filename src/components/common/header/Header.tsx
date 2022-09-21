@@ -38,20 +38,30 @@ export const Header: React.FC = () => {
           />
         </div>
         <div className={classes.controls}>
-          <div className={classes.controlsCart}>
-            <IconButton color="primary" component="label">
-              <AddShoppingCartIcon fontSize="large" />
-            </IconButton>
-            {/* <Button variant="outlined">My cart</Button> */}
-            <span className={classes.controlsCartOrders}>0</span>
-          </div>
-          <SignIN />
-
           <div className={classes.controlsAvatar}>
             <Avatar
               src={currentUser.photoURL ? currentUser.photoURL : defaultAva}
               alt="avatar"
             />
+          </div>
+          <div className={classes.controlsButtons}>
+            <div>
+              {currentUser.displayName ? currentUser.displayName : "HELLO"}
+            </div>
+            <SignIN />
+          </div>
+
+          <div className={classes.controlsCart}>
+            <IconButton color="primary" component="label">
+              <AddShoppingCartIcon fontSize="large" />
+            </IconButton>
+            <span className={classes.controlsCartOrders}>0</span>
+          </div>
+          <div>
+            Shopping Cart
+            <div>
+              <b>$0.00</b>
+            </div>
           </div>
         </div>
       </div>

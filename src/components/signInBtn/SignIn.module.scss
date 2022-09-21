@@ -1,0 +1,9 @@
+.links {
+    text-transform: uppercase;
+    font-weight: 500;
+
+    &:hover {
+        cursor: pointer;
+        color: #1976d2;
+    }
+}

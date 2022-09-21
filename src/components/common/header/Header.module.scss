@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  padding: 16px 50px;
   border-bottom: 1px solid  #787885;
   background-color: white;
 
@@ -12,13 +12,27 @@
   }
 
   .searchField {
-    flex-basis: 670px;
+    flex-basis: 650px;
   }
 
   .controls {
     display: flex;
     justify-content: space-between;
     align-items: center; 
+
+    &Avatar {
+      // width: 50px;
+      // height: 50px;
+      // border-radius: 50%;
+      margin-right: 16px;
+    }
+
+    &Buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 50px;
+    }
 
     &Cart {
       position: relative;
@@ -40,12 +54,7 @@
       }
     }
 
-    &Avatar {
-      // width: 50px;
-      // height: 50px;
-      // border-radius: 50%;
-      margin-left: 16px;
-    }
+    
   }
 
 
