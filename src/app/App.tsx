@@ -10,7 +10,9 @@ import { ErrorSnackbar } from "../components/common/ErrorSnackbar/ErrorSnackbar"
 import { Header } from "../components/common/header/Header";
 import { WithLayout } from "../components/common/withLayout/WithLayout";
 import { Chat } from "../components/chat/Chat";
+import { MainPage } from "../components/mainPage/MainPage";
 import "./App.css";
+import Error404 from "../components/error404/Error404";
 
 export const App = () => {
   const [open, setOpen] = useState(false);
@@ -30,12 +32,28 @@ export const App = () => {
             path="/"
             element={
               <WithLayout>
+                <MainPage />
+              </WithLayout>
+            }
+          />
+          <Route
+            path="/models_1-10"
+            element={
+              <WithLayout>
                 <OnlineStore />
               </WithLayout>
             }
           />
           <Route path="/cart" element={<Cart />} />
           {/* <Route path="/login" element={<LoginForm />} /> */}
+          <Route
+            path="/error404"
+            element={
+              <WithLayout>
+                <Error404 />
+              </WithLayout>
+            }
+          />
         </Routes>
       </Container>
       {!open ? (

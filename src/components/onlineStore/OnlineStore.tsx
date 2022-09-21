@@ -2,6 +2,9 @@ import React from "react";
 import defProdImg from "../../assets/img/defProdLogo.png";
 import { Button } from "@mui/material";
 import { Grade } from "../grade/Grade";
+import { collection, orderBy, query } from "firebase/firestore";
+import { db } from "../..";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import classes from "./OnlineStore.module.scss";
 
 type ProductsType = {
@@ -59,25 +62,35 @@ const productsList: Array<ProductsType> = [
 ];
 
 export const OnlineStore: React.FC = React.memo(() => {
+  const [products] = useCollectionData(query(collection(db, "messages")));
+
+  console.log(products);
+
   return (
     <div className={classes.wrapper}>
-      <h3>Сars at auction</h3>
+      <h3>Car models 1:16 </h3>
 
       <div className={classes.productsList}>
-        {productsList.map((pr) => (
-          <div key={pr.id} className={classes.item}>
-            <img src={pr.image ? pr.image : defProdImg} alt={"product-item"} />
-            <div className={classes.item_title}>{pr.title}</div>
-            <div className={classes.item_price}>${pr.price}</div>
-            <div className={classes.item_description}>{pr.description}</div>
-            <div className={classes.controls}>
-              <Grade value={pr.grade} />
-              <Button variant="outlined" style={{ display: "block" }}>
-                buy
-              </Button>
+        {products &&
+          products.map((model, ind) => (
+            <div key={ind} className={classes.item}>
+              <img
+                src={model.image ? model.image : defProdImg}
+                alt={"product-item"}
+              />
+              <div
+                className={classes.item_title}
+              >{`${model.brand} ${model.model}`}</div>
+              <div className={classes.item_price}>${model.price}</div>
+
+              <div className={classes.controls}>
+                <Grade value={model.grade} />
+                <Button variant="outlined" style={{ display: "block" }}>
+                  buy
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
