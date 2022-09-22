@@ -13,8 +13,8 @@
     .item {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      // align-items: center;
+      justify-content: flex-start;
+      min-height: 315px;
       padding: 16px;
            
       &:hover {
@@ -62,13 +62,23 @@
         
       }
 
-      .controls {
+      &_controls {
         width: 100%;
-        display: flex;
-        justify-content: space-between;
+        display: none;
+        justify-content: center;
         align-items: center;
+        cursor: pointer;
+        padding: 10px 0;
+        font-size: 18px;
+        font-weight: 500;
+        color: white;
+        background-color: #1976d2;
         margin-top: 10px;
       }
+    }
+
+    .item:hover .item_controls {
+      display: flex;
     }
   }
 }

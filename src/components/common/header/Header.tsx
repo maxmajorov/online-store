@@ -5,22 +5,19 @@ import { SearchInput } from "../search-input/SearchInput";
 import { LinearProgress } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { SignIN } from "../../signInBtn/SignIn";
+import { Menu } from "../../common/menu/Menu";
 import { appStatusSelector } from "../../../store/reducers/app-reducer";
 import { useAppSelector } from "../../../store/store";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
 import classes from "./Header.module.scss";
-import { NavLink, useNavigate } from "react-router-dom";
 import { currentUserSelector } from "../../../store/reducers/auth-reducer";
-import { menuItems } from "../../../const";
 
 export const Header: React.FC = () => {
   const [searchCustomer, setSearchCustomer] = useState<string>("");
 
   const status = useAppSelector(appStatusSelector);
   const currentUser = useAppSelector(currentUserSelector);
-
-  const navigate = useNavigate();
 
   const onSearchHandler = () => {
     console.log("find");
@@ -69,22 +66,7 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      <nav className={classes.menuList}>
-        {Object.values(menuItems).map((el, ind) => {
-          const [link, route] = el.split("/");
-          return (
-            <NavLink
-              to={route}
-              state={link}
-              className={({ isActive }) =>
-                classes.link + " " + (isActive ? classes.active : "")
-              }
-            >
-              {link}
-            </NavLink>
-          );
-        })}
-      </nav>
+      <Menu />
 
       {status === "loading" && <LinearProgress />}
     </header>

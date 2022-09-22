@@ -54,11 +54,7 @@ export const OnlineStore: React.FC = React.memo(() => {
               </div>
               <div className={classes.item_price}>${model.price}</div>
 
-              <div className={classes.controls}>
-                <Button variant="outlined" style={{ display: "block" }}>
-                  add to cart
-                </Button>
-              </div>
+              <div className={classes.item_controls}>Add to cart</div>
             </div>
           ))}
       </div>
