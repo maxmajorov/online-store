@@ -24,7 +24,7 @@ export const OnlineStore: React.FC = React.memo(() => {
 
   return (
     <div className={classes.wrapper}>
-      <h3>Car models {state} </h3>
+      <h3>{state} </h3>
 
       <div>sorting... add in future)))</div>
       <div className={classes.productsList}>
@@ -56,7 +56,7 @@ export const OnlineStore: React.FC = React.memo(() => {
 
               <div className={classes.controls}>
                 <Button variant="outlined" style={{ display: "block" }}>
-                  buy
+                  add to cart
                 </Button>
               </div>
             </div>
