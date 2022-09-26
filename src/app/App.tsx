@@ -44,8 +44,14 @@ export const App = () => {
               </WithLayout>
             }
           />
-          <Route path="/cart" element={<Cart />} />
-          {/* <Route path="/login" element={<LoginForm />} /> */}
+          <Route
+            path="/cart"
+            element={
+              <WithLayout>
+                <Cart />
+              </WithLayout>
+            }
+          />
           <Route
             path="/*"
             element={

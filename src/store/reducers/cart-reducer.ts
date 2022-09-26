@@ -7,7 +7,12 @@ import {
 import { RootStateType } from "../store";
 import { setAppStatusAC } from "./app-reducer";
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  DocumentData,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../..";
 
 // Типизация state в toolkit Не нужна
@@ -47,6 +52,7 @@ const slice = createSlice({
   initialState: {
     price: 0.0,
     orderNums: 0,
+    ordersInCart: [] as Array<OrderType>,
   },
   reducers: {
     setPriceAC(state, action: PayloadAction<{ price: number }>) {
@@ -55,16 +61,36 @@ const slice = createSlice({
     setOrdersNumAC(state) {
       state.orderNums++;
     },
+    setOrdersToCartAC(state, action: PayloadAction<{ order: OrderType }>) {
+      state.ordersInCart.push(action.payload.order);
+    },
   },
   extraReducers(builder) {},
 });
 
 export const cartReducer = slice.reducer;
-export const { setPriceAC, setOrdersNumAC } = slice.actions;
+export const { setPriceAC, setOrdersNumAC, setOrdersToCartAC } = slice.actions;
 
 // ==== SELECTORS ====
 
 export const priceSelector = (state: RootStateType) => state.cart.price;
 export const ordersNumSelector = (state: RootStateType) => state.cart.orderNums;
+export const ordersInCartSelector = (state: RootStateType) =>
+  state.cart.ordersInCart;
 
 // ==== TYPES ====
+
+export type OrderType = {
+  body: string;
+  brand: string;
+  copacity: string;
+  fuel: string;
+  gear: string;
+  grade: number;
+  image: string;
+  inStore: boolean;
+  model: string;
+  odometr: number;
+  price: number;
+  year: number;
+};

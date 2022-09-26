@@ -1,24 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import defImg from "../../assets/img/default-image.png";
-import { Button } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
-import { collection, orderBy, query } from "firebase/firestore";
+import { collection, DocumentData, orderBy, query } from "firebase/firestore";
 import { db } from "../..";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import classes from "./OnlineStore.module.scss";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import { useAppDispatch } from "../../store/store";
 import { setAppStatusAC } from "../../store/reducers/app-reducer";
 import {
-  priceSelector,
+  OrderType,
   setOrdersNumAC,
+  setOrdersToCartAC,
   setPriceAC,
 } from "../../store/reducers/cart-reducer";
 
 export const OnlineStore: React.FC = React.memo(() => {
-  const priceStore = useAppSelector(priceSelector);
-
   const { state } = useLocation();
 
   const dispatch = useAppDispatch();
@@ -29,8 +27,14 @@ export const OnlineStore: React.FC = React.memo(() => {
     ? dispatch(setAppStatusAC({ status: "loading" }))
     : dispatch(setAppStatusAC({ status: "idle" }));
 
-  const addToCartHandler = (price: number) => {
+  // export declare interface DocumentData {
+  //     /** A mapping between a field and its value. */
+  //     [field: string]: any;
+  // }
+
+  const addToCartHandler = (price: number, order: any) => {
     dispatch(setPriceAC({ price }));
+    dispatch(setOrdersToCartAC({ order }));
     dispatch(setOrdersNumAC());
   };
 
@@ -73,7 +77,7 @@ export const OnlineStore: React.FC = React.memo(() => {
                     : {}
                 }
                 className={classes.item_controls}
-                onClick={() => addToCartHandler(model.price)}
+                onClick={() => addToCartHandler(model.price, model)}
               >
                 Add to cart
               </div>

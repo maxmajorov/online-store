@@ -16,7 +16,7 @@ import {
   ordersNumSelector,
   priceSelector,
 } from "../../../store/reducers/cart-reducer";
-import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import { useNavigate } from "react-router-dom";
 
 export const Header: React.FC = () => {
   const [searchCustomer, setSearchCustomer] = useState<string>("");
@@ -25,6 +25,8 @@ export const Header: React.FC = () => {
   const currentUser = useAppSelector(currentUserSelector);
   const price = useAppSelector(priceSelector);
   const orderNum = useAppSelector(ordersNumSelector);
+
+  const navigate = useNavigate();
 
   const onSearchHandler = () => {
     console.log("find");
@@ -59,7 +61,10 @@ export const Header: React.FC = () => {
             <SignIN />
           </div>
 
-          <div className={classes.controlsCart}>
+          <div
+            className={classes.controlsCart}
+            onClick={() => navigate("cart")}
+          >
             <IconButton color="primary" component="label">
               <AddShoppingCartIcon fontSize="large" />
             </IconButton>
