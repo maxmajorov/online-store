@@ -12,12 +12,18 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
 import classes from "./Header.module.scss";
 import { currentUserSelector } from "../../../store/reducers/auth-reducer";
+import {
+  ordersNumSelector,
+  priceSelector,
+} from "../../../store/reducers/cart-reducer";
 
 export const Header: React.FC = () => {
   const [searchCustomer, setSearchCustomer] = useState<string>("");
 
   const status = useAppSelector(appStatusSelector);
   const currentUser = useAppSelector(currentUserSelector);
+  const price = useAppSelector(priceSelector);
+  const orderNum = useAppSelector(ordersNumSelector);
 
   const onSearchHandler = () => {
     console.log("find");
@@ -56,12 +62,12 @@ export const Header: React.FC = () => {
             <IconButton color="primary" component="label">
               <AddShoppingCartIcon fontSize="large" />
             </IconButton>
-            <span className={classes.controlsCartOrders}>0</span>
+            <span className={classes.controlsCartOrders}>{orderNum}</span>
           </div>
           <div>
             Shopping Cart
             <div>
-              <b>$0.00</b>
+              <b>${price.toFixed(2)}</b>
             </div>
           </div>
         </div>

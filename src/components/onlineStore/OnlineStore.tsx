@@ -10,6 +10,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import classes from "./OnlineStore.module.scss";
 import { useAppDispatch } from "../../store/store";
 import { setAppStatusAC } from "../../store/reducers/app-reducer";
+import { setOrdersNumAC, setPriceAC } from "../../store/reducers/cart-reducer";
 
 export const OnlineStore: React.FC = React.memo(() => {
   const { state } = useLocation();
@@ -21,6 +22,12 @@ export const OnlineStore: React.FC = React.memo(() => {
   !products
     ? dispatch(setAppStatusAC({ status: "loading" }))
     : dispatch(setAppStatusAC({ status: "idle" }));
+
+  const addToCartHandler = (price: number) => {
+    console.log("add");
+    dispatch(setPriceAC({ price }));
+    dispatch(setOrdersNumAC());
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -54,7 +61,12 @@ export const OnlineStore: React.FC = React.memo(() => {
               </div>
               <div className={classes.item_price}>${model.price}</div>
 
-              <div className={classes.item_controls}>Add to cart</div>
+              <div
+                className={classes.item_controls}
+                onClick={() => addToCartHandler(model.price)}
+              >
+                Add to cart
+              </div>
             </div>
           ))}
       </div>
