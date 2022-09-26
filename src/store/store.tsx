@@ -2,15 +2,26 @@ import thunkMiddleware, { ThunkAction } from "redux-thunk";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
 import { useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import { rootReducer } from "./reducers/reducers";
 
 // ==== CREATE STORE ====
 
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).prepend(thunkMiddleware),
 });
+
+export let persistor = persistStore(store);
 
 export type RootStateType = ReturnType<typeof store.getState>;
 
@@ -36,6 +47,6 @@ window.store = store;
 
 if (process.env.NODE_ENV === "development" && module.hot) {
   module.hot.accept("./reducers/reducers", () => {
-    store.replaceReducer(rootReducer);
+    store.replaceReducer(persistedReducer);
   });
 }

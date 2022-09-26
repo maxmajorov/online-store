@@ -16,6 +16,7 @@ import {
   ordersNumSelector,
   priceSelector,
 } from "../../../store/reducers/cart-reducer";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
 
 export const Header: React.FC = () => {
   const [searchCustomer, setSearchCustomer] = useState<string>("");

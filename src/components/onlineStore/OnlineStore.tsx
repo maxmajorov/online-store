@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import defImg from "../../assets/img/default-image.png";
 import { Button } from "@mui/material";
@@ -8,11 +8,17 @@ import { collection, orderBy, query } from "firebase/firestore";
 import { db } from "../..";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import classes from "./OnlineStore.module.scss";
-import { useAppDispatch } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setAppStatusAC } from "../../store/reducers/app-reducer";
-import { setOrdersNumAC, setPriceAC } from "../../store/reducers/cart-reducer";
+import {
+  priceSelector,
+  setOrdersNumAC,
+  setPriceAC,
+} from "../../store/reducers/cart-reducer";
 
 export const OnlineStore: React.FC = React.memo(() => {
+  const priceStore = useAppSelector(priceSelector);
+
   const { state } = useLocation();
 
   const dispatch = useAppDispatch();
@@ -24,7 +30,6 @@ export const OnlineStore: React.FC = React.memo(() => {
     : dispatch(setAppStatusAC({ status: "idle" }));
 
   const addToCartHandler = (price: number) => {
-    console.log("add");
     dispatch(setPriceAC({ price }));
     dispatch(setOrdersNumAC());
   };
@@ -62,6 +67,11 @@ export const OnlineStore: React.FC = React.memo(() => {
               <div className={classes.item_price}>${model.price}</div>
 
               <div
+                style={
+                  !model.inStore
+                    ? { backgroundColor: "gray", pointerEvents: "none" }
+                    : {}
+                }
                 className={classes.item_controls}
                 onClick={() => addToCartHandler(model.price)}
               >
