@@ -1,4 +1,14 @@
 .swiper {
+  position: relative;
   width:100%;
+
+  .title {
+    position: absolute;
+    top: 80px;
+    right: 40px;
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+  }
 
 }

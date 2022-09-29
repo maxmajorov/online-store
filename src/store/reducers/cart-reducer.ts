@@ -83,14 +83,13 @@ export const ordersInCartSelector = (state: RootStateType) =>
 export type OrderType = {
   body: string;
   brand: string;
-  copacity: string;
+  scale: string;
   fuel: string;
   gear: string;
   grade: number;
   image: string;
   inStore: boolean;
   model: string;
-  odometr: number;
   price: number;
   year: number;
 };
