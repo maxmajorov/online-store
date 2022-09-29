@@ -45,8 +45,8 @@ export const OnlineStore: React.FC = React.memo(() => {
       <div>sorting... add in future)))</div>
       <div className={classes.productsList}>
         {products &&
-          products.map((model, ind) => (
-            <div key={ind} className={classes.item}>
+          products.map((model) => (
+            <div key={model.id} className={classes.item}>
               <div className={classes.item_image}>
                 <img
                   src={model.image ? model.image : defImg}

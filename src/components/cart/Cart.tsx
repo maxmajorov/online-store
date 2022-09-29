@@ -9,10 +9,11 @@ import TableCell from "@mui/material/TableCell";
 import ClearIcon from "@mui/icons-material/Clear";
 import DoneIcon from "@mui/icons-material/Done";
 import classes from "./Cart.module.scss";
-import { useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
   ordersInCartSelector,
   OrderType,
+  removeOrderFromCartAC,
 } from "../../store/reducers/cart-reducer";
 import { Counter } from "../common/counter/Counter";
 
@@ -85,18 +86,21 @@ const EnhancedTableHead: React.FC = () => {
 };
 
 type TableBodyType = {
-  index: number;
   order: OrderType;
 };
 
-const EnhancedTableBody: React.FC<TableBodyType> = ({ order, index }) => {
+const EnhancedTableBody: React.FC<TableBodyType> = ({ order }) => {
   const [count, setCount] = useState(1);
-  const deleteItemHandler = () => {
-    console.log("del");
+
+  const dispatch = useAppDispatch();
+
+  const deleteItemHandler = (id: string, price: number) => {
+    dispatch(removeOrderFromCartAC({ id, price }));
+    console.log("del", id);
   };
 
   return (
-    <TableRow hover key={index}>
+    <TableRow hover key={order.id}>
       <TableCell>
         <div className={classes.productItem}>
           <img src={order.image} alt="rc-car" style={{ width: "140px" }} />
@@ -138,7 +142,10 @@ const EnhancedTableBody: React.FC<TableBodyType> = ({ order, index }) => {
       <TableCell
         align={headCells.find((cell) => cell.id === "deleteItem")?.textAlign}
       >
-        <IconButton aria-label="delete" onClick={deleteItemHandler}>
+        <IconButton
+          aria-label="delete"
+          onClick={() => deleteItemHandler(order.id, order.price)}
+        >
           <ClearIcon color={"error"} />
         </IconButton>
       </TableCell>
@@ -161,9 +168,7 @@ export const Cart: React.FC = React.memo(() => {
           <EnhancedTableHead />
           <TableBody>
             {ordersList.length ? (
-              ordersList.map((order, index) => (
-                <EnhancedTableBody order={order} index={index} />
-              ))
+              ordersList.map((order) => <EnhancedTableBody order={order} />)
             ) : (
               <div>Orders not found...</div> //Стилизовать!!!
             )}
