@@ -8,3 +8,11 @@ export enum menuItems {
   "Trucks" = "Trucks/trucks",
   Parts = "Parts/parts",
 }
+
+export enum Promocodes {
+  summer = "summer/5",
+  winter = "winter/10",
+  autumn = "autunm/7",
+  spring = "spring/8",
+  holidays = "holidays/15",
+}

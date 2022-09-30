@@ -23,7 +23,12 @@ export const OnlineStore: React.FC = React.memo(() => {
     : dispatch(setAppStatusAC({ status: "idle" }));
 
   const addToCartHandler = (order: any) => {
-    dispatch(setOrdersToCartAC({ order }));
+    const addedOrder = {
+      data: order,
+      count: 1,
+      totalPrice: order.price,
+    };
+    dispatch(setOrdersToCartAC({ order: addedOrder }));
   };
 
   return (

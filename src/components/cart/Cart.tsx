@@ -14,13 +14,19 @@ import Link from "@mui/material/Link";
 import classes from "./Cart.module.scss";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
+  applyPromocodeAC,
+  delPromocodeAC,
+  isDiscountUseSelector,
   ordersInCartSelector,
-  OrderType,
+  OrderResponseType,
   removeOrderFromCartAC,
   totalPriceSelector,
+  OrderType,
 } from "../../store/reducers/cart-reducer";
 import { Counter } from "../common/counter/Counter";
 import { useNavigate } from "react-router-dom";
+import { Promocodes } from "../../const";
+import { setAppErrorAC } from "../../store/reducers/app-reducer";
 
 interface Data {
   id: string;
@@ -91,11 +97,13 @@ const EnhancedTableHead: React.FC = () => {
 };
 
 type TableBodyType = {
-  order: OrderType;
+  order: OrderType<OrderResponseType>;
 };
 
 const EnhancedTableBody: React.FC<TableBodyType> = ({ order }) => {
   const [count, setCount] = useState(1);
+
+  const isDiscountUse = useAppSelector(isDiscountUseSelector);
 
   const dispatch = useAppDispatch();
 
@@ -105,15 +113,15 @@ const EnhancedTableBody: React.FC<TableBodyType> = ({ order }) => {
   };
 
   return (
-    <TableRow hover key={order.id}>
+    <TableRow hover key={order.data.id}>
       <TableCell>
         <div className={classes.productItem}>
-          <img src={order.image} alt="rc-car" style={{ width: "140px" }} />
+          <img src={order.data.image} alt="rc-car" style={{ width: "140px" }} />
           <div className={classes.productItem_description}>
             <div className={classes.item_title}>
-              {`${order.brand} ${order.model}, ${order.year}`}
+              {`${order.data.brand} ${order.data.model}, ${order.data.year}`}
             </div>
-            <div className={classes.item_title}>Scale: {order.scale}</div>
+            <div className={classes.item_title}>Scale: {order.data.scale}</div>
           </div>
         </div>
       </TableCell>
@@ -121,19 +129,30 @@ const EnhancedTableBody: React.FC<TableBodyType> = ({ order }) => {
         padding="normal"
         align={headCells.find((cell) => cell.id === "status")?.textAlign}
       >
-        {order.inStore && <DoneIcon color="success" />}
+        {order.data.inStore && <DoneIcon color="success" />}
       </TableCell>
       <TableCell
         padding="normal"
         align={headCells.find((cell) => cell.id === "price")?.textAlign}
       >
-        ${order.price}
+        {!isDiscountUse ? (
+          <div className={classes.productPrice}>${order.data.price}</div>
+        ) : (
+          <div>
+            <div className={classes.productPrice_start}>
+              ${order.data.price}
+            </div>
+            <div className={classes.productPrice_end}>
+              ${order.totalPrice.toFixed(2)}
+            </div>
+          </div>
+        )}
       </TableCell>
       <TableCell
         padding="normal"
         align={headCells.find((cell) => cell.id === "count")?.textAlign}
       >
-        <Counter count={count} setCount={setCount} id={order.id} />
+        <Counter count={count} setCount={setCount} id={order.data.id} />
       </TableCell>
       <TableCell
         padding="normal"
@@ -141,7 +160,7 @@ const EnhancedTableBody: React.FC<TableBodyType> = ({ order }) => {
         width={"150px"}
       >
         <span className={classes.productPrice}>
-          ${(order.price * count).toFixed(2)}
+          ${(order.totalPrice * count).toFixed(2)}
         </span>
       </TableCell>
       <TableCell
@@ -149,7 +168,7 @@ const EnhancedTableBody: React.FC<TableBodyType> = ({ order }) => {
       >
         <IconButton
           aria-label="delete"
-          onClick={() => deleteItemHandler(order.id, order.price)}
+          onClick={() => deleteItemHandler(order.data.id, order.data.price)}
         >
           <ClearIcon color={"error"} />
         </IconButton>
@@ -159,10 +178,32 @@ const EnhancedTableBody: React.FC<TableBodyType> = ({ order }) => {
 };
 
 export const Cart: React.FC = React.memo(() => {
+  const [promocode, setPromocode] = useState("");
+
   const ordersList = useAppSelector(ordersInCartSelector);
   const totalPrice = useAppSelector(totalPriceSelector);
+  const isDiscountUse = useAppSelector(isDiscountUseSelector);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const applyPromocodeHandler = () => {
+    if (promocode in Promocodes) {
+      const [code, discont] = Object.values(Promocodes)
+        .filter((el) => el.includes(promocode))
+        .join()
+        .split("/");
+
+      dispatch(applyPromocodeAC({ discont: +discont }));
+      console.log(code, discont);
+    } else {
+      dispatch(setAppErrorAC({ error: "Promo code not found" }));
+    }
+  };
+
+  const delPromocodeHandler = () => {
+    dispatch(delPromocodeAC({ discont: 7 }));
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -193,13 +234,32 @@ export const Cart: React.FC = React.memo(() => {
             <div className={classes.promoCode}>
               <span className={classes.promoCode_text}>Enter Promo Code</span>
               <div className={classes.promocode_field}>
-                <TextField variant="outlined" size="small" />
-                <Button variant={"contained"}>Apply</Button>
+                {isDiscountUse ? (
+                  <Button variant={"contained"} onClick={delPromocodeHandler}>
+                    delete this promo
+                  </Button>
+                ) : (
+                  <>
+                    <TextField
+                      value={promocode}
+                      onChange={(e) => setPromocode(e.currentTarget.value)}
+                      variant="outlined"
+                      size="small"
+                    />
+                    <Button
+                      variant={"contained"}
+                      onClick={applyPromocodeHandler}
+                      disabled={isDiscountUse}
+                    >
+                      Apply
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
             <div className={classes.totalPrice}>
               <div className={classes.totalPrice_text}>
-                Total: ${totalPrice.toFixed(2)}
+                Total: ${totalPrice}
               </div>
               <Button variant={"contained"}>Proceed To Checkout</Button>
             </div>

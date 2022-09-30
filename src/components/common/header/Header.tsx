@@ -73,7 +73,7 @@ export const Header: React.FC = () => {
           <div>
             Shopping Cart
             <div>
-              <b>${totalPrice.toFixed(2)}</b>
+              <b>${totalPrice}</b>
             </div>
           </div>
         </div>
