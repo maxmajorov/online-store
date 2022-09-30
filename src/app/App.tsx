@@ -37,6 +37,14 @@ export const App = () => {
             }
           />
           <Route
+            path="/catalog"
+            element={
+              <WithLayout>
+                <OnlineStore />
+              </WithLayout>
+            }
+          />
+          <Route
             path="/retro-cars"
             element={
               <WithLayout>

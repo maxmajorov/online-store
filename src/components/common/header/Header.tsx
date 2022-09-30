@@ -14,7 +14,7 @@ import classes from "./Header.module.scss";
 import { currentUserSelector } from "../../../store/reducers/auth-reducer";
 import {
   ordersNumSelector,
-  priceSelector,
+  totalPriceSelector,
 } from "../../../store/reducers/cart-reducer";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
 
   const status = useAppSelector(appStatusSelector);
   const currentUser = useAppSelector(currentUserSelector);
-  const price = useAppSelector(priceSelector);
+  const totalPrice = useAppSelector(totalPriceSelector);
   const orderNum = useAppSelector(ordersNumSelector);
 
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ export const Header: React.FC = () => {
           <div>
             Shopping Cart
             <div>
-              <b>${price.toFixed(2)}</b>
+              <b>${totalPrice.toFixed(2)}</b>
             </div>
           </div>
         </div>

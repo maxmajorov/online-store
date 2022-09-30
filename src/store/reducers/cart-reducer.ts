@@ -48,15 +48,23 @@ const slice = createSlice({
   },
 
   reducers: {
+    setCountAC(state, action: PayloadAction<{ id: string; count: number }>) {
+      state.ordersInCart.map((el) =>
+        el.id === action.payload.id ? (el.count = action.payload.count) : el
+      );
+    },
     setPriceAC(state, action: PayloadAction<{ price: number }>) {
       state.price = state.price + action.payload.price;
     },
+
     setOrdersNumAC(state) {
       state.orderNums++;
     },
+
     setOrdersToCartAC(state, action: PayloadAction<{ order: OrderType }>) {
       state.ordersInCart.push(action.payload.order);
     },
+
     removeOrderFromCartAC(
       state,
       action: PayloadAction<{ id: string; price: number }>
@@ -73,7 +81,9 @@ const slice = createSlice({
 
 export const cartReducer = slice.reducer;
 export const {
+  setCountAC,
   setPriceAC,
+
   setOrdersNumAC,
   setOrdersToCartAC,
   removeOrderFromCartAC,
@@ -81,7 +91,11 @@ export const {
 
 // ==== SELECTORS ====
 
-export const priceSelector = (state: RootStateType) => state.cart.price;
+export const totalPriceSelector = (state: RootStateType) =>
+  state.cart.ordersInCart.reduce(
+    (acc, next) => acc + next.count * next.price,
+    0
+  );
 export const ordersNumSelector = (state: RootStateType) => state.cart.orderNums;
 export const ordersInCartSelector = (state: RootStateType) =>
   state.cart.ordersInCart;
@@ -93,6 +107,7 @@ export type OrderType = {
   body: string;
   brand: string;
   scale: string;
+  count: number;
   fuel: string;
   gear: string;
   grade: number;

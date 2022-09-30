@@ -3,14 +3,13 @@ import { useLocation } from "react-router-dom";
 import defImg from "../../assets/img/default-image.png";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
-import { collection, DocumentData, orderBy, query } from "firebase/firestore";
+import { collection, orderBy, query } from "firebase/firestore";
 import { db } from "../..";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import classes from "./OnlineStore.module.scss";
 import { useAppDispatch } from "../../store/store";
 import { setAppStatusAC } from "../../store/reducers/app-reducer";
 import {
-  OrderType,
   setOrdersNumAC,
   setOrdersToCartAC,
   setPriceAC,
@@ -26,11 +25,6 @@ export const OnlineStore: React.FC = React.memo(() => {
   !products
     ? dispatch(setAppStatusAC({ status: "loading" }))
     : dispatch(setAppStatusAC({ status: "idle" }));
-
-  // export declare interface DocumentData {
-  //     /** A mapping between a field and its value. */
-  //     [field: string]: any;
-  // }
 
   const addToCartHandler = (price: number, order: any) => {
     dispatch(setPriceAC({ price }));

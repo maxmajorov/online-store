@@ -45,8 +45,8 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 //@ts-ignore
 window.store = store;
 
-if (process.env.NODE_ENV === "development" && module.hot) {
-  module.hot.accept("./reducers/reducers", () => {
-    store.replaceReducer(persistedReducer);
-  });
-}
+// if (process.env.NODE_ENV === "development" && module.hot) {
+//   module.hot.accept("./reducers/reducers", () => {
+//     store.replaceReducer(persistedReducer);
+//   });
+// }
