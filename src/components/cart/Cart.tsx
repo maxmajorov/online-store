@@ -168,42 +168,46 @@ export const Cart: React.FC = React.memo(() => {
     <div className={classes.wrapper}>
       <h3 className={classes.heading}>MY CART</h3>
       {ordersList.length ? (
-        <TableContainer className={classes.tableContainer}>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={"medium"}
-          >
-            <EnhancedTableHead />
-            <TableBody>
-              {ordersList.map((order) => (
-                <EnhancedTableBody order={order} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <>
+          <TableContainer className={classes.tableContainer}>
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size={"medium"}
+            >
+              <EnhancedTableHead />
+              <TableBody>
+                {ordersList.map((order) => (
+                  <EnhancedTableBody order={order} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div className={classes.orderingProcess}>
+            <Link
+              onClick={() => navigate("/catalog")}
+              style={{ cursor: "pointer" }}
+            >
+              Back to store
+            </Link>
+            <div className={classes.promoCode}>
+              <span className={classes.promoCode_text}>Enter Promo Code</span>
+              <div className={classes.promocode_field}>
+                <TextField variant="outlined" size="small" />
+                <Button variant={"contained"}>Apply</Button>
+              </div>
+            </div>
+            <div className={classes.totalPrice}>
+              <div className={classes.totalPrice_text}>
+                Total: ${totalPrice.toFixed(2)}
+              </div>
+              <Button variant={"contained"}>Proceed To Checkout</Button>
+            </div>
+          </div>
+        </>
       ) : (
         <div className={classes.notification}>Orders not found...</div>
       )}
-      <div className={classes.orderingProcess}>
-        <Link
-          onClick={() => navigate("/catalog")}
-          style={{ cursor: "pointer" }}
-        >
-          Back to store
-        </Link>
-        <div className={classes.promoCode}>
-          <span className={classes.promoCode_text}>Enter Promo Code</span>
-          <div className={classes.promocode_field}>
-            <TextField variant="outlined" size="small" />
-            <Button variant={"contained"}>Apply</Button>
-          </div>
-        </div>
-        <div className={classes.totalPrice}>
-          <div className={classes.totalPrice_text}>Total: ${totalPrice}</div>
-          <Button variant={"contained"}>Proceed To Checkout</Button>
-        </div>
-      </div>
     </div>
   );
 });

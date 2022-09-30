@@ -53,16 +53,10 @@ const slice = createSlice({
         el.id === action.payload.id ? (el.count = action.payload.count) : el
       );
     },
-    setPriceAC(state, action: PayloadAction<{ price: number }>) {
-      state.price = state.price + action.payload.price;
-    },
-
-    setOrdersNumAC(state) {
-      state.orderNums++;
-    },
 
     setOrdersToCartAC(state, action: PayloadAction<{ order: OrderType }>) {
       state.ordersInCart.push(action.payload.order);
+      state.orderNums++;
     },
 
     removeOrderFromCartAC(
@@ -80,14 +74,8 @@ const slice = createSlice({
 });
 
 export const cartReducer = slice.reducer;
-export const {
-  setCountAC,
-  setPriceAC,
-
-  setOrdersNumAC,
-  setOrdersToCartAC,
-  removeOrderFromCartAC,
-} = slice.actions;
+export const { setCountAC, setOrdersToCartAC, removeOrderFromCartAC } =
+  slice.actions;
 
 // ==== SELECTORS ====
 

@@ -28,6 +28,7 @@ export const Counter: React.FC<CounterPropsType> = ({
             setCount(count - 1);
             dispatch(setCountAC({ id, count: --count }));
           }}
+          disabled={count === 1}
         >
           <RemoveIcon fontSize="small" />
         </Button>
