@@ -27,6 +27,7 @@ import { Counter } from "../common/counter/Counter";
 import { useNavigate } from "react-router-dom";
 import { Promocodes } from "../../const";
 import { setAppErrorAC } from "../../store/reducers/app-reducer";
+import { OrderPage } from "../orderPage/OrderPage";
 
 interface Data {
   id: string;
@@ -179,6 +180,7 @@ const EnhancedTableBody: React.FC<TableBodyType> = ({ order }) => {
 
 export const Cart: React.FC = React.memo(() => {
   const [promocode, setPromocode] = useState("");
+  const [isMakeOrder, setIsMakeOrder] = useState(false);
 
   const ordersList = useAppSelector(ordersInCartSelector);
   const totalPrice = useAppSelector(totalPriceSelector);
@@ -260,9 +262,15 @@ export const Cart: React.FC = React.memo(() => {
               <div className={classes.totalPrice_text}>
                 Total: ${totalPrice}
               </div>
-              <Button variant={"contained"}>Proceed To Checkout</Button>
+              <Button
+                variant={"contained"}
+                onClick={() => setIsMakeOrder(!isMakeOrder)}
+              >
+                Proceed To Checkout
+              </Button>
             </div>
           </div>
+          <OrderPage isMakeOrder={isMakeOrder} />
         </>
       ) : (
         <div className={classes.notification}>Orders not found...</div>

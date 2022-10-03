@@ -1,0 +1,70 @@
+.wrapper {
+  
+  .heading {
+    font-size: 30px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .tableContainer {
+
+    .productItem{
+      display: flex;
+
+
+      &_description {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 15px;
+        
+      }
+    }
+
+    .productPrice {
+      display: flex;
+      flex-direction: column;
+      font-size: 20px;
+      font-weight: 700;
+
+      &_start {
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: line-through
+      }  
+
+      &_end {
+        font-size: 16px;
+        font-weight: 500;
+        color: red;
+      } 
+    }
+  }
+
+  .notification {
+    font-size: 18px;
+    color: red
+  }
+
+  .orderingProcess {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .promoCode, .totalPrice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &_text {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      letter-spacing: .5px;
+    }
+  }
+}
+
+
