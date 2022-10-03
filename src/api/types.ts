@@ -1,8 +1,14 @@
 // ==== TYPES ====
 
-export type LoginParamsType = {
-  email: string;
-  password: string;
+export type SendOrderInfoType = {
+  chat_id: string;
+  parse_mode: string;
+  text: string;
+};
+
+export type TelegramResponseType = {
+  ok: boolean;
+  result: any;
 };
 
 type ErrorType = {

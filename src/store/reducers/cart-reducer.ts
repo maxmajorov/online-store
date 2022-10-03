@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
+import { telegramAPI } from "../../api/api";
 import {
   handleServerAppError,
   handleServerNetworkError,
@@ -11,38 +12,37 @@ import { setAppStatusAC } from "./app-reducer";
 
 // ==== THUNKS ====
 
-// export const sendNewMessageTC = createAsyncThunk(
-//   "chat/sendNewMessage",
-//   async (value: string, thunkAPI) => {
-//     //@ts-ignore
-//     const { uid, photoURL, displayName, email } = getAuth().currentUser;
+export const sendOrderInfoToTelegramTC = createAsyncThunk(
+  "cart/sendOrderInfo",
+  async (orderMessage: string, thunkAPI) => {
+    const response = await telegramAPI.sendOrderInfo(orderMessage);
 
-//     try {
-//       thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-//       await addDoc(collection(db, "messages"), {
-//         uid,
-//         name: displayName,
-//         email,
-//         photoURL,
-//         text: value,
-//         createdAt: serverTimestamp(),
-//       });
-//     } catch (e) {
-//       const err = e as Error | AxiosError<{ error: string }>;
-//       handleServerNetworkError(err, thunkAPI.dispatch);
-//       return thunkAPI.rejectWithValue({
-//         errors: "Invalid email or password",
-//       });
-//     } finally {
-//       thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-//     }
-//   }
-// );
+    try {
+      thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
+
+      if (response.data.ok) {
+        thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+      } else {
+        // handleServerAppError(response.data., dispatch);
+        return thunkAPI.rejectWithValue(null);
+      }
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>;
+      handleServerNetworkError(err, thunkAPI.dispatch);
+      return thunkAPI.rejectWithValue({
+        errors: response.status,
+      });
+    } finally {
+      thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+    }
+  }
+);
 
 const slice = createSlice({
   name: "cart",
   initialState: {
     isDiscountUse: false,
+    isMessageSendSuccess: false,
     discount: 0,
     orderNums: 0,
     ordersInCart: [] as Array<OrderType<OrderResponseType>>,
@@ -92,7 +92,11 @@ const slice = createSlice({
       state.orderNums--;
     },
   },
-  extraReducers(builder) {},
+  extraReducers(builder) {
+    builder.addCase(sendOrderInfoToTelegramTC.fulfilled, (state, action) => {
+      state.isMessageSendSuccess = true;
+    });
+  },
 });
 
 export const cartReducer = slice.reducer;
@@ -115,6 +119,8 @@ export const isDiscountUseSelector = (state: RootStateType) =>
 export const ordersNumSelector = (state: RootStateType) => state.cart.orderNums;
 export const ordersInCartSelector = (state: RootStateType) =>
   state.cart.ordersInCart;
+export const isMessageSendSuccessSelector = (state: RootStateType) =>
+  state.cart.isMessageSendSuccess;
 
 // ==== TYPES ====
 

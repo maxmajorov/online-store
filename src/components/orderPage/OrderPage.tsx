@@ -1,23 +1,24 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
+
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import classes from "./OrderPage.module.scss";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
-  isDiscountUseSelector,
+  sendOrderInfoToTelegramTC,
   totalPriceSelector,
 } from "../../store/reducers/cart-reducer";
 import { useNavigate } from "react-router-dom";
 import { setAppErrorAC } from "../../store/reducers/app-reducer";
 import { deliveryTimes } from "../../const";
+import axios from "axios";
+import { telegramAPI } from "../../api/api";
 
 type OrderPageType = {
   isMakeOrder: boolean;
@@ -77,14 +78,26 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
 
       onSubmit: (values) => {
         console.log(JSON.stringify(values, null, 2));
-        // setBtnDisable(true);
-        // axios
-        //   .post("https://gmail-smtp-nodejs.herokuapp.com/send-message", values)
-        //   .then((res) => {
-        //     setStatus(res.data);
-        //     // alert("Your message has been send");
-        //     setBtnDisable(false);
-        //   });
+
+        let orderInfo = `<b>Order info from RS Cars store</b>\n`;
+        orderInfo += `<b>Sender: </b> ${"Max"} \n`;
+        orderInfo += `<b>City: </b> ${values.city} \n`;
+        orderInfo += `<b>Shipping: </b> ${
+          values.deliveryToClient ? "Yes" : "No"
+        } \n`;
+        orderInfo += `<b>Address: </b> ${values.street}, ${values.home} ${values.floor} ${values.flat} \n`;
+        orderInfo += `<b>Delivery time: </b> ${values.deliveryTime} \n`;
+        orderInfo += `<b>Phone: </b> ${values.phone} \n`;
+        orderInfo += `<b>Comment: </b> ${values.textMessage} \n`;
+
+        // axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        //   chat_id: CHAT_ID,
+        //   parse_mode: "html",
+        //   text: orderInfo,
+        // });
+
+        // telegramAPI.sendOrderInfo(orderInfo);
+        dispatch(sendOrderInfoToTelegramTC(orderInfo));
 
         formik.resetForm();
       },
