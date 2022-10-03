@@ -16,3 +16,21 @@ export enum Promocodes {
   spring = "spring/8",
   holidays = "holidays/15",
 }
+
+export const deliveryTimes = [
+  {
+    value: "11.00 - 13.00",
+  },
+  {
+    value: "13.00 - 15.00",
+  },
+  {
+    value: "15.00 - 17.00",
+  },
+  {
+    value: "17.00 - 19.00",
+  },
+  {
+    value: "19.00 - 21.00",
+  },
+];

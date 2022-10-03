@@ -230,7 +230,7 @@ export const Cart: React.FC = React.memo(() => {
               onClick={() => navigate("/catalog")}
               style={{ cursor: "pointer" }}
             >
-              Back to store
+              Continue Shopping
             </Link>
             <div className={classes.promoCode}>
               <span className={classes.promoCode_text}>Enter Promo Code</span>

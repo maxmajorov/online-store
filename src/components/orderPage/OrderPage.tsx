@@ -1,33 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useFormik } from "formik";
-import TableBody from "@mui/material/TableBody";
-import IconButton from "@mui/material/IconButton";
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import ClearIcon from "@mui/icons-material/Clear";
-import DoneIcon from "@mui/icons-material/Done";
+import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import classes from "./OrderPage.module.scss";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
-  applyPromocodeAC,
-  delPromocodeAC,
   isDiscountUseSelector,
-  ordersInCartSelector,
-  OrderResponseType,
-  removeOrderFromCartAC,
   totalPriceSelector,
-  OrderType,
 } from "../../store/reducers/cart-reducer";
-
 import { useNavigate } from "react-router-dom";
-
 import { setAppErrorAC } from "../../store/reducers/app-reducer";
+import { deliveryTimes } from "../../const";
 
 type OrderPageType = {
   isMakeOrder: boolean;
@@ -35,17 +25,17 @@ type OrderPageType = {
 
 export const OrderPage: React.FC<OrderPageType> = React.memo(
   ({ isMakeOrder }) => {
-    const ordersList = useAppSelector(ordersInCartSelector);
     const totalPrice = useAppSelector(totalPriceSelector);
-    const isDiscountUse = useAppSelector(isDiscountUseSelector);
 
     const navigate = useNavigate();
+
     const dispatch = useAppDispatch();
 
     const formik = useFormik({
       initialValues: {
         city: "",
-        delivery: true,
+        deliveryToClient: true,
+        withoutDelivery: false,
         street: "",
         home: "",
         floor: "",
@@ -70,14 +60,6 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
           errors.home = "Required";
         }
 
-        if (!values.floor) {
-          errors.floor = "Required";
-        }
-
-        if (!values.flat) {
-          errors.flat = "Required";
-        }
-
         if (!values.deliveryTime) {
           errors.deliveryTime = "Required";
         }
@@ -94,7 +76,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
       },
 
       onSubmit: (values) => {
-        // console.log(JSON.stringify(values, null, 2));
+        console.log(JSON.stringify(values, null, 2));
         // setBtnDisable(true);
         // axios
         //   .post("https://gmail-smtp-nodejs.herokuapp.com/send-message", values)
@@ -108,107 +90,171 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
       },
     });
 
+    useEffect(() => {
+      makeOrderAncorRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }, [isMakeOrder]);
+
+    const makeOrderAncorRef = useRef<HTMLDivElement>(null);
+
     return (
       <div
         className={classes.wrapper}
         style={isMakeOrder ? { display: "block" } : { display: "none" }}
       >
-        <h3 className={classes.heading}>Delivery</h3>
         <form onSubmit={formik.handleSubmit} className={classes.form}>
-          <div className={classes.formRow}>
-            <div className={classes.col_6}>
-              <div className={classes.formGroup}>
-                <input
-                  id="sender"
-                  type="text"
-                  name="sender"
-                  placeholder="Name"
-                  onChange={formik.handleChange}
-                  value={formik.values.city}
-                  className={classes.formInput}
-                />
-                {/* {formik.touched.sender && formik.errors.sender ? (
-                  <div className={classes.errorMessage}>
-                    {formik.errors.sender}
-                  </div>
-                ) : null} */}
-                <input
-                  id="phone"
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone"
-                  onChange={formik.handleChange}
-                  value={formik.values.phone}
-                  className={classes.formInput}
-                />
-                {/* {formik.touched.phone && formik.errors.phone ? (
-                  <div
-                    style={{ top: "145px" }}
-                    className={classes.errorMessage}
+          <div className={classes.orderDetailsBlocks}>
+            <div className={classes.deliveryBlock}>
+              <h4 className={classes.title}>Shipping</h4>
+              <FormGroup>
+                <FormControl>
+                  <TextField
+                    id="outlined-basic"
+                    label="City"
+                    variant="outlined"
+                    size="small"
+                    {...formik.getFieldProps("city")}
+                  />
+                  {formik.touched.city && formik.errors.city ? (
+                    <div className={classes.errorMessage}>
+                      {formik.errors.city}
+                    </div>
+                  ) : null}
+                </FormControl>
+                <FormControl>
+                  <FormControlLabel
+                    label={"Shipping to client"}
+                    control={
+                      <Checkbox {...formik.getFieldProps("deliveryToClient")} />
+                    }
+                    style={{ paddingLeft: "10px" }}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormControlLabel
+                    label={"Pick up yourself"}
+                    control={
+                      <Checkbox {...formik.getFieldProps("withoutDelivery")} />
+                    }
+                    style={{ paddingLeft: "10px", marginBottom: "10px" }}
+                  />
+                </FormControl>
+                <FormControl>
+                  <TextField
+                    id="outlined-basic"
+                    label="Street"
+                    variant="outlined"
+                    size="small"
+                    {...formik.getFieldProps("street")}
+                  />
+                  {formik.touched.city && formik.errors.street ? (
+                    <div className={classes.errorMessage}>
+                      {formik.errors.street}
+                    </div>
+                  ) : null}
+                </FormControl>
+                <div className={classes.inputGroup}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Home"
+                    variant="outlined"
+                    size="small"
+                    style={{ width: "100px", marginRight: "10px" }}
+                    {...formik.getFieldProps("home")}
+                  />
+                  <TextField
+                    id="outlined-basic"
+                    label="Floor"
+                    variant="outlined"
+                    size="small"
+                    style={{ width: "100px", marginRight: "10px" }}
+                    {...formik.getFieldProps("floor")}
+                  />
+                  <TextField
+                    id="outlined-basic"
+                    label="Flat"
+                    variant="outlined"
+                    size="small"
+                    style={{ width: "100px" }}
+                    {...formik.getFieldProps("flat")}
+                  />
+                </div>
+
+                <FormControl>
+                  <TextField
+                    id="outlined-select-currency"
+                    select
+                    label="Select"
+                    size="small"
+                    {...formik.getFieldProps("deliveryTime")}
                   >
-                    {formik.errors.phone}
-                  </div>
-                ) : null} */}
-              </div>
+                    {deliveryTimes.map((option, ind) => (
+                      <MenuItem key={ind} value={option.value}>
+                        {option.value}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {formik.touched.deliveryTime && formik.errors.deliveryTime ? (
+                    <div
+                      style={{ top: "145px" }}
+                      className={classes.errorMessage}
+                    >
+                      {formik.errors.deliveryTime}
+                    </div>
+                  ) : null}
+                </FormControl>
+                <FormControl>
+                  <TextField
+                    id="outlined-basic"
+                    label="Phone"
+                    variant="outlined"
+                    size="small"
+                    {...formik.getFieldProps("phone")}
+                  />
+                  {formik.touched.phone && formik.errors.phone ? (
+                    <div className={classes.errorMessage}>
+                      {formik.errors.phone}
+                    </div>
+                  ) : null}
+                </FormControl>
+
+                <FormControl>
+                  <TextField
+                    id="outlined-basic"
+                    label="Comment"
+                    variant="outlined"
+                    multiline
+                    rows={4}
+                    {...formik.getFieldProps("textMessage")}
+                  />
+                </FormControl>
+              </FormGroup>
             </div>
-            <div className={classes.col_6}>
-              <div className={classes.formGroup}>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  onChange={formik.handleChange}
-                  value={formik.values.deliveryTime}
-                  className={classes.formInput}
-                />
-                {/* {formik.touched.email && formik.errors.email ? (
-                  <div className={classes.errorMessage}>
-                    {formik.errors.email}
-                  </div>
-                ) : null} */}
-                <input
-                  id="subject"
-                  type="text"
-                  name="subject"
-                  placeholder="Subject"
-                  className={classes.formInput}
-                  onChange={formik.handleChange}
-                  value={formik.values.phone}
-                />
-                {/* {formik.touched.subject && formik.errors.subject ? (
-                  <div
-                    style={{ top: "145px" }}
-                    className={classes.errorMessage}
-                  >
-                    {formik.errors.subject}
-                  </div>
-                ) : null} */}
-              </div>
+            <div className={classes.paymentBlock}>
+              <h4 className={classes.title}>Payment</h4>
             </div>
-            <div className={classes.col_12}>
-              <div className={classes.formGroup}>
-                <textarea
-                  id="textMessage"
-                  name="textMessage"
-                  placeholder="Your message"
-                  className={classes.formInput}
-                  onChange={formik.handleChange}
-                  value={formik.values.textMessage}
-                />
-                {/* {formik.touched.textMessage && formik.errors.textMessage ? (
-                  <div className={classes.errorMessage}>
-                    {formik.errors.textMessage}
-                  </div>
-                ) : null} */}
+          </div>
+
+          <div className={classes.controlsBlock}>
+            <div>
+              <div>Subtotal: ${totalPrice}</div>
+              <div>
+                Shipping:{" "}
+                {!formik.getFieldProps("deliveryToClient") ? "FREE" : "PAY"}
               </div>
-            </div>
-            <div className={classes.col_12}>
-              <Button>Send request</Button>
+              <Button
+                type="submit"
+                variant="outlined"
+                style={{ marginTop: "15px" }}
+              >
+                Send request
+              </Button>
             </div>
           </div>
         </form>
-        <h3 className={classes.heading}>Payment</h3>
+        <div ref={makeOrderAncorRef}>HIDDEN</div>
       </div>
     );
   }
@@ -216,11 +262,8 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
 
 type FormikErrorType = {
   city?: string;
-  delivery?: string;
   street?: string;
   home?: string;
-  floor?: string;
-  flat?: string;
   deliveryTime?: string;
   phone?: string;
   textMessage?: string;
