@@ -43,6 +43,7 @@ const slice = createSlice({
   name: "cart",
   initialState: {
     isDiscountUse: false,
+    discount: 0,
     orderNums: 0,
     ordersInCart: [] as Array<OrderType<OrderResponseType>>,
   },
@@ -56,25 +57,27 @@ const slice = createSlice({
       );
     },
 
-    applyPromocodeAC(state, action: PayloadAction<{ discont: number }>) {
+    applyPromocodeAC(state, action: PayloadAction<{ discount: number }>) {
       state.ordersInCart.map(
         (el) =>
           (el.totalPrice =
-            el.totalPrice - (el.totalPrice * action.payload.discont) / 100)
+            el.totalPrice - (el.totalPrice * action.payload.discount) / 100)
       );
       state.isDiscountUse = true;
+      state.discount = action.payload.discount;
     },
 
-    delPromocodeAC(state, action: PayloadAction<{ discont: number }>) {
+    delPromocodeAC(state) {
+      state.ordersInCart.map((el) => (el.totalPrice = el.data.price));
+
       state.isDiscountUse = false;
+      state.discount = 0;
     },
 
     setOrdersToCartAC(
       state,
       action: PayloadAction<{ order: OrderType<OrderResponseType> }>
     ) {
-      // state.ordersInCart = [];
-      // state.orderNums = 0;
       state.ordersInCart.push(action.payload.order);
       state.orderNums++;
     },
@@ -87,7 +90,6 @@ const slice = createSlice({
         (el) => el.data.id !== action.payload.id
       );
       state.orderNums--;
-      // state.orderNums = 0;
     },
   },
   extraReducers(builder) {},

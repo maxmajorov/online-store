@@ -189,20 +189,19 @@ export const Cart: React.FC = React.memo(() => {
 
   const applyPromocodeHandler = () => {
     if (promocode in Promocodes) {
-      const [code, discont] = Object.values(Promocodes)
+      const [code, discount] = Object.values(Promocodes)
         .filter((el) => el.includes(promocode))
         .join()
         .split("/");
 
-      dispatch(applyPromocodeAC({ discont: +discont }));
-      console.log(code, discont);
+      dispatch(applyPromocodeAC({ discount: +discount }));
     } else {
       dispatch(setAppErrorAC({ error: "Promo code not found" }));
     }
   };
 
   const delPromocodeHandler = () => {
-    dispatch(delPromocodeAC({ discont: 7 }));
+    dispatch(delPromocodeAC());
   };
 
   return (
