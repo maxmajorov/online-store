@@ -57,3 +57,7 @@ export const pickupPoints = [
     workingHours: "09.00 - 21.00",
   },
 ];
+
+export const paymentMethods = ["Payment upon receipt", "Online payment"];
+
+export const shippingCost = 1.2;

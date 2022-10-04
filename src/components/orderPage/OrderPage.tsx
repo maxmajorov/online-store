@@ -1,23 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import { useFormik } from "formik";
-import FormControl from "@mui/material/FormControl";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import FormLabel from "@mui/material/FormLabel";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import classes from "./OrderPage.module.scss";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
   sendOrderInfoToTelegramTC,
   totalPriceSelector,
 } from "../../store/reducers/cart-reducer";
 import { useNavigate } from "react-router-dom";
-import { deliveryTimes, pickupPoints } from "../../const";
+import { shippingCost } from "../../const";
+import { ShippingBlock } from "./shippingBlock/ShippingBlock";
+import classes from "./OrderPage.module.scss";
+import { PaymentBlock } from "./paymentBlock/PaymentBlock";
 
 type OrderPageType = {
   isMakeOrder: boolean;
@@ -36,6 +29,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
         city: "",
         shipping: "deliveryToClient",
         pickupPoint: "Partizanskaya st, 178",
+        payment: "Payment upon receipt",
         street: "",
         home: "",
         floor: "",
@@ -52,11 +46,11 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
           errors.city = "Required";
         }
 
-        if (!values.street) {
+        if (formik.values.shipping === "deliveryToClient" && !values.street) {
           errors.street = "Required";
         }
 
-        if (!values.home) {
+        if (formik.values.shipping === "deliveryToClient" && !values.home) {
           errors.home = "Required";
         }
 
@@ -66,10 +60,6 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
 
         if (!values.phone) {
           errors.phone = "Required";
-        }
-
-        if (!values.textMessage) {
-          errors.textMessage = "Required";
         }
 
         return errors;
@@ -88,7 +78,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
         orderInfo += `<b>Phone: </b> ${values.phone} \n`;
         orderInfo += `<b>Comment: </b> ${values.textMessage} \n`;
 
-        dispatch(sendOrderInfoToTelegramTC(orderInfo));
+        // dispatch(sendOrderInfoToTelegramTC(orderInfo));
 
         formik.resetForm();
       },
@@ -110,8 +100,9 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
       >
         <form onSubmit={formik.handleSubmit} className={classes.form}>
           <div className={classes.orderDetailsBlocks}>
-            <div className={classes.deliveryBlock}>
-              <h4 className={classes.title}>Shipping</h4>
+            <ShippingBlock formik={formik} />
+            <PaymentBlock formik={formik} />
+            {/* <h4 className={classes.title}>Shipping</h4>
               <FormGroup>
                 <FormControl>
                   <TextField
@@ -270,35 +261,50 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
                     {...formik.getFieldProps("textMessage")}
                   />
                 </FormControl>
-              </FormGroup>
-            </div>
-            <div className={classes.paymentBlock}>
-              <h4 className={classes.title}>Payment</h4>
-            </div>
+              </FormGroup> */}
           </div>
 
           <div className={classes.controlsBlock}>
             <div>
               <div>Subtotal: ${totalPrice}</div>
               <div>
-                Shipping:{" "}
+                Shipping:
                 {!formik.getFieldProps("deliveryToClient") ? "FREE" : "PAY"}
               </div>
+              <div>Total: ${+totalPrice + shippingCost}</div>
               <Button
                 type="submit"
-                variant="outlined"
+                variant="contained"
+                disabled={
+                  !formik.isValid || !formik.dirty || formik.isSubmitting
+                }
                 style={{ marginTop: "15px" }}
+                onClick={formik.submitForm}
               >
-                Send request
+                Order
               </Button>
             </div>
           </div>
         </form>
-        <div ref={makeOrderAncorRef}>HIDDEN</div>
+        <div ref={makeOrderAncorRef} />
       </div>
     );
   }
 );
+
+export interface FormValues {
+  city: string;
+  shipping: string;
+  pickupPoint: string;
+  payment: string;
+  street: string;
+  home: string;
+  floor: string;
+  flat: string;
+  deliveryTime: string;
+  phone: string;
+  textMessage: string;
+}
 
 type FormikErrorType = {
   city?: string;

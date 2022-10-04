@@ -1,0 +1,20 @@
+.shippingBlock {
+  min-width: 320px;  
+  
+  .title {
+    margin-bottom: 30px;
+  }
+
+  .inputGroup {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+}
+
+
+
+.errorMessage {
+  font-size: 13px;
+  color: red;
+}
