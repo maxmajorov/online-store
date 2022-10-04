@@ -66,7 +66,6 @@ export const { setAppErrorAC, setAppStatusAC } = slice.actions;
 // ==== SELECTORS ====
 
 export const appStatusSelector = (state: RootStateType) => state.app.status;
-
 export const appErrorSelector = (state: RootStateType) => state.app.error;
 
 //==== TYPES ====

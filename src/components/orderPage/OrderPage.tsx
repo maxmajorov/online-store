@@ -5,7 +5,6 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
-
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import classes from "./OrderPage.module.scss";
@@ -15,10 +14,7 @@ import {
   totalPriceSelector,
 } from "../../store/reducers/cart-reducer";
 import { useNavigate } from "react-router-dom";
-import { setAppErrorAC } from "../../store/reducers/app-reducer";
 import { deliveryTimes } from "../../const";
-import axios from "axios";
-import { telegramAPI } from "../../api/api";
 
 type OrderPageType = {
   isMakeOrder: boolean;
@@ -90,13 +86,6 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
         orderInfo += `<b>Phone: </b> ${values.phone} \n`;
         orderInfo += `<b>Comment: </b> ${values.textMessage} \n`;
 
-        // axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        //   chat_id: CHAT_ID,
-        //   parse_mode: "html",
-        //   text: orderInfo,
-        // });
-
-        // telegramAPI.sendOrderInfo(orderInfo);
         dispatch(sendOrderInfoToTelegramTC(orderInfo));
 
         formik.resetForm();
