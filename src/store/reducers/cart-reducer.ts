@@ -135,7 +135,8 @@ export type OrderResponseType = {
   body: string;
   brand: string;
   scale: string;
-  count: number;
+  category: string;
+  articleNumber: string;
   fuel: string;
   gear: string;
   grade: number;

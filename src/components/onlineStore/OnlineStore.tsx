@@ -33,9 +33,8 @@ export const OnlineStore: React.FC = React.memo(() => {
 
   return (
     <div className={classes.wrapper}>
-      <h3>{state} </h3>
+      <h3>{state}</h3>
 
-      <div>sorting... add in future)))</div>
       <div className={classes.productsList}>
         {products &&
           products.map((model) => (
@@ -60,6 +59,9 @@ export const OnlineStore: React.FC = React.memo(() => {
                 ) : (
                   <CloseIcon color="error" />
                 )}
+              </div>
+              <div className={classes.item_web_id}>
+                Web ID: {model.articleNumber}
               </div>
               <div className={classes.item_price}>${model.price}</div>
 

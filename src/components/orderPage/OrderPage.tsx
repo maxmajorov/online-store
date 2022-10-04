@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import Button from "@mui/material/Button";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
+  ordersInCartSelector,
   sendOrderInfoToTelegramTC,
   totalPriceSelector,
 } from "../../store/reducers/cart-reducer";
@@ -11,6 +12,7 @@ import { shippingCost } from "../../const";
 import { ShippingBlock } from "./shippingBlock/ShippingBlock";
 import classes from "./OrderPage.module.scss";
 import { PaymentBlock } from "./paymentBlock/PaymentBlock";
+import { currentUserSelector } from "../../store/reducers/auth-reducer";
 
 type OrderPageType = {
   isMakeOrder: boolean;
@@ -19,6 +21,8 @@ type OrderPageType = {
 export const OrderPage: React.FC<OrderPageType> = React.memo(
   ({ isMakeOrder }) => {
     const totalPrice = useAppSelector(totalPriceSelector);
+    const currentUser = useAppSelector(currentUserSelector);
+    const ordersInCart = useAppSelector(ordersInCartSelector);
 
     const navigate = useNavigate();
 
@@ -69,16 +73,25 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
         console.log(JSON.stringify(values, null, 2));
 
         let orderInfo = `<b>Order info from RS Cars store</b>\n`;
-        orderInfo += `<b>Sender: </b> ${"Max"} \n`;
+        orderInfo += `<b>Sender: </b> ${currentUser.displayName} \n`;
         orderInfo += `<b>City: </b> ${values.city} \n`;
-        orderInfo += `<b>Shipping: </b> ${values.shipping} \n`;
-        orderInfo += `<b>Pick up point: </b> ${values.pickupPoint} \n`;
+        orderInfo += `<b>Shipping: </b> ${
+          values.shipping ? values.shipping : values.pickupPoint
+        } \n`;
         orderInfo += `<b>Address: </b> ${values.street}, ${values.home} ${values.floor} ${values.flat} \n`;
         orderInfo += `<b>Delivery time: </b> ${values.deliveryTime} \n`;
         orderInfo += `<b>Phone: </b> ${values.phone} \n`;
+        orderInfo += `<b>Goods: </b> ${ordersInCart.map(
+          (el) => el.data.articleNumber
+        )} \n`;
+        orderInfo += `<b>Total price: </b> ${
+          +totalPrice +
+          (formik.values.shipping === "deliveryToClient" ? shippingCost : 0)
+        } \n`;
+        orderInfo += `<b>Payment: </b> ${formik.values.payment} \n`;
         orderInfo += `<b>Comment: </b> ${values.textMessage} \n`;
 
-        // dispatch(sendOrderInfoToTelegramTC(orderInfo));
+        dispatch(sendOrderInfoToTelegramTC(orderInfo));
 
         formik.resetForm();
       },
@@ -102,176 +115,34 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
           <div className={classes.orderDetailsBlocks}>
             <ShippingBlock formik={formik} />
             <PaymentBlock formik={formik} />
-            {/* <h4 className={classes.title}>Shipping</h4>
-              <FormGroup>
-                <FormControl>
-                  <TextField
-                    id="outlined-basic"
-                    label="City"
-                    variant="outlined"
-                    size="small"
-                    {...formik.getFieldProps("city")}
-                  />
-                  {formik.touched.city && formik.errors.city ? (
-                    <div className={classes.errorMessage}>
-                      {formik.errors.city}
-                    </div>
-                  ) : null}
-                </FormControl>
-                <FormControl>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={formik.values.shipping}
-                    onChange={formik.handleChange}
-                  >
-                    <FormControlLabel
-                      name="shipping"
-                      value={"deliveryToClient"}
-                      control={<Radio />}
-                      label="Shipping to client"
-                    />
-                    <FormControlLabel
-                      name="shipping"
-                      value={"withoutDelivery"}
-                      control={<Radio />}
-                      label="Pick up yourself"
-                    />
-                  </RadioGroup>
-                  {formik.values.shipping === "withoutDelivery" ? (
-                    <RadioGroup
-                      aria-labelledby="demo-controlled-radio-buttons-group"
-                      name="controlled-radio-buttons-group"
-                      value={formik.values.pickupPoint}
-                      onChange={formik.handleChange}
-                    >
-                      {pickupPoints.map((point, ind) => (
-                        <FormControlLabel
-                          key={ind}
-                          name="pickupPoint"
-                          value={point.point}
-                          control={<Radio />}
-                          label={point.point}
-                          style={{ paddingLeft: "30px" }}
-                        />
-                      ))}
-                    </RadioGroup>
-                  ) : null}
-                </FormControl>
-                <FormControl
-                  style={
-                    formik.values.shipping === "withoutDelivery"
-                      ? { display: "none" }
-                      : { display: "flex" }
-                  }
-                  margin="normal"
-                >
-                  <TextField
-                    id="outlined-basic"
-                    label="Street"
-                    variant="outlined"
-                    size="small"
-                    {...formik.getFieldProps("street")}
-                  />
-                  {formik.touched.city && formik.errors.street ? (
-                    <div className={classes.errorMessage}>
-                      {formik.errors.street}
-                    </div>
-                  ) : null}
-                </FormControl>
-                <div
-                  className={classes.inputGroup}
-                  style={
-                    formik.values.shipping === "withoutDelivery"
-                      ? { display: "none" }
-                      : { display: "flex" }
-                  }
-                >
-                  <TextField
-                    id="outlined-basic"
-                    label="Home"
-                    variant="outlined"
-                    size="small"
-                    style={{ width: "100px", marginRight: "10px" }}
-                    {...formik.getFieldProps("home")}
-                  />
-                  <TextField
-                    id="outlined-basic"
-                    label="Floor"
-                    variant="outlined"
-                    size="small"
-                    style={{ width: "100px", marginRight: "10px" }}
-                    {...formik.getFieldProps("floor")}
-                  />
-                  <TextField
-                    id="outlined-basic"
-                    label="Flat"
-                    variant="outlined"
-                    size="small"
-                    style={{ width: "100px" }}
-                    {...formik.getFieldProps("flat")}
-                  />
-                </div>
-
-                <FormControl margin="normal">
-                  <TextField
-                    id="outlined-select-currency"
-                    select
-                    label="Select"
-                    size="small"
-                    {...formik.getFieldProps("deliveryTime")}
-                  >
-                    {deliveryTimes.map((option, ind) => (
-                      <MenuItem key={ind} value={option.value}>
-                        {option.value}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  {formik.touched.deliveryTime && formik.errors.deliveryTime ? (
-                    <div
-                      style={{ top: "145px" }}
-                      className={classes.errorMessage}
-                    >
-                      {formik.errors.deliveryTime}
-                    </div>
-                  ) : null}
-                </FormControl>
-                <FormControl margin="normal">
-                  <TextField
-                    id="outlined-basic"
-                    label="Phone"
-                    variant="outlined"
-                    size="small"
-                    {...formik.getFieldProps("phone")}
-                  />
-                  {formik.touched.phone && formik.errors.phone ? (
-                    <div className={classes.errorMessage}>
-                      {formik.errors.phone}
-                    </div>
-                  ) : null}
-                </FormControl>
-
-                <FormControl margin="normal">
-                  <TextField
-                    id="outlined-basic"
-                    label="Comment"
-                    variant="outlined"
-                    multiline
-                    rows={4}
-                    {...formik.getFieldProps("textMessage")}
-                  />
-                </FormControl>
-              </FormGroup> */}
           </div>
-
           <div className={classes.controlsBlock}>
-            <div>
-              <div>Subtotal: ${totalPrice}</div>
+            <div className={classes.totalPrice}>
+              <div>
+                Subtotal: <span>${totalPrice}</span>
+              </div>
               <div>
                 Shipping:
-                {!formik.getFieldProps("deliveryToClient") ? "FREE" : "PAY"}
+                <span>
+                  {formik.values.shipping === "withoutDelivery" ? (
+                    <span style={{ color: "red" }}> FREE</span>
+                  ) : (
+                    ` $${shippingCost}`
+                  )}
+                </span>
               </div>
-              <div>Total: ${+totalPrice + shippingCost}</div>
+              <div>
+                Total:{" "}
+                <span>
+                  $
+                  {(
+                    +totalPrice +
+                    (formik.values.shipping === "deliveryToClient"
+                      ? shippingCost
+                      : 0)
+                  ).toFixed(2)}
+                </span>
+              </div>
               <Button
                 type="submit"
                 variant="contained"

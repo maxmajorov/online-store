@@ -1,6 +1,8 @@
+@import '../../styles/scss/variables.scss';
+
 .wrapper {
   margin-top: 50px;
-  border-top: 1px solid gray;
+  border-top: 2px solid $backgroundColorLightGray;
   padding-top: 20px;
 
   .form {
@@ -15,18 +17,28 @@
     .controlsBlock {
       display: flex;
       justify-content: right;
-      margin-top: 20px;
-      border-top: 1px solid gray;
+      margin: 20px 0;
+      border-top: 2px solid $backgroundColorLightGray;
+
+      .totalPrice {
+        margin-top: 20px; 
+        
+        & div {
+          letter-spacing: 1px;
+          margin-bottom: 5px;
+        }
+        
+        & span {
+          font-size: 18px;
+          font-weight: 600;
+        }
+      }
     }
     
   }  
   
 }
 
-.inputGroup {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
+
 
 
