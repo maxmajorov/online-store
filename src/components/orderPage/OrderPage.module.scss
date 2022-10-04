@@ -8,10 +8,10 @@
       display:flex;
       justify-content: space-between;
       justify-content: center;
+  
 
       .deliveryBlock {
-
-    
+        min-width: 320px;    
       }
 
 
@@ -40,4 +40,8 @@
 
 .title {
   margin-bottom: 30px;
+}
+
+.errorMessage {
+  color: red;
 }

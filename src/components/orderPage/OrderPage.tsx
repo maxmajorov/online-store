@@ -4,6 +4,9 @@ import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -14,7 +17,7 @@ import {
   totalPriceSelector,
 } from "../../store/reducers/cart-reducer";
 import { useNavigate } from "react-router-dom";
-import { deliveryTimes } from "../../const";
+import { deliveryTimes, pickupPoints } from "../../const";
 
 type OrderPageType = {
   isMakeOrder: boolean;
@@ -31,8 +34,8 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
     const formik = useFormik({
       initialValues: {
         city: "",
-        deliveryToClient: true,
-        withoutDelivery: false,
+        shipping: "deliveryToClient",
+        pickupPoint: "Partizanskaya st, 178",
         street: "",
         home: "",
         floor: "",
@@ -78,9 +81,8 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
         let orderInfo = `<b>Order info from RS Cars store</b>\n`;
         orderInfo += `<b>Sender: </b> ${"Max"} \n`;
         orderInfo += `<b>City: </b> ${values.city} \n`;
-        orderInfo += `<b>Shipping: </b> ${
-          values.deliveryToClient ? "Yes" : "No"
-        } \n`;
+        orderInfo += `<b>Shipping: </b> ${values.shipping} \n`;
+        orderInfo += `<b>Pick up point: </b> ${values.pickupPoint} \n`;
         orderInfo += `<b>Address: </b> ${values.street}, ${values.home} ${values.floor} ${values.flat} \n`;
         orderInfo += `<b>Delivery time: </b> ${values.deliveryTime} \n`;
         orderInfo += `<b>Phone: </b> ${values.phone} \n`;
@@ -126,24 +128,53 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
                   ) : null}
                 </FormControl>
                 <FormControl>
-                  <FormControlLabel
-                    label={"Shipping to client"}
-                    control={
-                      <Checkbox {...formik.getFieldProps("deliveryToClient")} />
-                    }
-                    style={{ paddingLeft: "10px" }}
-                  />
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    value={formik.values.shipping}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel
+                      name="shipping"
+                      value={"deliveryToClient"}
+                      control={<Radio />}
+                      label="Shipping to client"
+                    />
+                    <FormControlLabel
+                      name="shipping"
+                      value={"withoutDelivery"}
+                      control={<Radio />}
+                      label="Pick up yourself"
+                    />
+                  </RadioGroup>
+                  {formik.values.shipping === "withoutDelivery" ? (
+                    <RadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={formik.values.pickupPoint}
+                      onChange={formik.handleChange}
+                    >
+                      {pickupPoints.map((point, ind) => (
+                        <FormControlLabel
+                          key={ind}
+                          name="pickupPoint"
+                          value={point.point}
+                          control={<Radio />}
+                          label={point.point}
+                          style={{ paddingLeft: "30px" }}
+                        />
+                      ))}
+                    </RadioGroup>
+                  ) : null}
                 </FormControl>
-                <FormControl>
-                  <FormControlLabel
-                    label={"Pick up yourself"}
-                    control={
-                      <Checkbox {...formik.getFieldProps("withoutDelivery")} />
-                    }
-                    style={{ paddingLeft: "10px", marginBottom: "10px" }}
-                  />
-                </FormControl>
-                <FormControl>
+                <FormControl
+                  style={
+                    formik.values.shipping === "withoutDelivery"
+                      ? { display: "none" }
+                      : { display: "flex" }
+                  }
+                  margin="normal"
+                >
                   <TextField
                     id="outlined-basic"
                     label="Street"
@@ -157,7 +188,14 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
                     </div>
                   ) : null}
                 </FormControl>
-                <div className={classes.inputGroup}>
+                <div
+                  className={classes.inputGroup}
+                  style={
+                    formik.values.shipping === "withoutDelivery"
+                      ? { display: "none" }
+                      : { display: "flex" }
+                  }
+                >
                   <TextField
                     id="outlined-basic"
                     label="Home"
@@ -184,7 +222,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
                   />
                 </div>
 
-                <FormControl>
+                <FormControl margin="normal">
                   <TextField
                     id="outlined-select-currency"
                     select
@@ -207,7 +245,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
                     </div>
                   ) : null}
                 </FormControl>
-                <FormControl>
+                <FormControl margin="normal">
                   <TextField
                     id="outlined-basic"
                     label="Phone"
@@ -222,7 +260,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
                   ) : null}
                 </FormControl>
 
-                <FormControl>
+                <FormControl margin="normal">
                   <TextField
                     id="outlined-basic"
                     label="Comment"

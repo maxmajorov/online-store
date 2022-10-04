@@ -34,3 +34,26 @@ export const deliveryTimes = [
     value: "19.00 - 21.00",
   },
 ];
+
+export const pickupPoints = [
+  {
+    point: "Partizanskaya st, 178",
+    workingHours: "09.00 - 21.00",
+  },
+  {
+    point: "Tashkentskaya st, 56",
+    workingHours: "09.00 - 21.00",
+  },
+  {
+    point: "Mayakovskaya st, 47",
+    workingHours: "10.00 - 22.00",
+  },
+  {
+    point: "Vasnecova st, 23",
+    workingHours: "09.00 - 21.00",
+  },
+  {
+    point: "Varvasheni st, 1",
+    workingHours: "09.00 - 21.00",
+  },
+];
