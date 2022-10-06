@@ -12,6 +12,7 @@ export const Menu: React.FC = () => {
             const [link, route] = el.split("/");
             return (
               <NavLink
+                key={ind}
                 to={route}
                 state={link}
                 className={({ isActive }) =>

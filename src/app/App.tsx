@@ -13,6 +13,7 @@ import { Chat } from "../components/chat/Chat";
 import { MainPage } from "../components/mainPage/MainPage";
 import "./App.css";
 import Error404 from "../components/error404/Error404";
+import { Footer } from "../components/common/footer/Footer";
 
 export const App = () => {
   const [open, setOpen] = useState(false);
@@ -70,6 +71,7 @@ export const App = () => {
           />
         </Routes>
       </Container>
+      <Footer open={open} setOpen={setOpen} />
       {!open ? (
         <div className="chatIcon" onClick={() => setOpen(!open)}>
           Chat with us

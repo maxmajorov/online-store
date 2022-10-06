@@ -1,4 +1,5 @@
 export enum menuItems {
+  "Home" = "Home/",
   "All" = "All catalog/catalog",
   "Retro" = "Retro/retro-cars",
   "All Road" = "All Road/all-road-cars",

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../../../assets/img/log.png";
+import Logo from "../../../assets/img/logo.jpg";
 import defaultAva from "../../../assets/img/def-image.png";
 import { SearchInput } from "../search-input/SearchInput";
 import { LinearProgress } from "@mui/material";
@@ -36,9 +36,7 @@ export const Header: React.FC = () => {
     <header style={{ position: "fixed", width: "100%", zIndex: 100 }}>
       <div className={classes.header}>
         <div className={classes.headerLogo}>
-          <div>
-            <img src={Logo} className={classes.logo} alt="logo" />
-          </div>
+          <img src={Logo} className={classes.logo} alt="logo" />
         </div>
         <div className={classes.searchField}>
           <SearchInput

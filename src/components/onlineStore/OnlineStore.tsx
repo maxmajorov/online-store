@@ -12,7 +12,11 @@ import { setAppStatusAC } from "../../store/reducers/app-reducer";
 import { setOrdersToCartAC } from "../../store/reducers/cart-reducer";
 
 export const OnlineStore: React.FC = React.memo(() => {
-  const { state } = useLocation();
+  interface LocationState {
+    state: string;
+  }
+  const location = useLocation();
+  const link = location.state as LocationState;
 
   const dispatch = useAppDispatch();
 
@@ -33,7 +37,7 @@ export const OnlineStore: React.FC = React.memo(() => {
 
   return (
     <div className={classes.wrapper}>
-      <h3>{state}</h3>
+      <h3>{link}</h3>
 
       <div className={classes.productsList}>
         {products &&

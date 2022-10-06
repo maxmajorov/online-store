@@ -1,0 +1,57 @@
+@import '../../../styles/scss/variables.scss';
+
+.footerSection {
+  position: relative;
+  padding: 20px 0 ;
+  border-top: 2px solid $backgroundColorLightGray;
+  // background-color: $backgroundColorLightGray;
+
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-bottom: 2px solid $backgroundColorLightGray;
+
+    .content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; 
+      flex-wrap: wrap;
+
+      .logo {
+        width: 65px;
+        height: 65px;
+    
+      }
+
+      .social {
+        min-width: 250px;
+
+        & ul {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        
+      .links {
+        &:hover {
+          transform: translate(2px, 2px);
+          border-radius: 50%;
+          color: $errorColor;
+          box-shadow: 0px 0px 20px 7px  $errorColor;
+          transition: ease-in-out 0.5s;
+        }
+}
+      }     
+    }    
+  }
+
+  .copyright {
+    display: flex;
+    justify-content: center;
+    padding: 25px 0;
+  }
+}
+
+
