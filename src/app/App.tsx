@@ -72,6 +72,7 @@ export const App = () => {
         </Routes>
       </Container>
       <Footer open={open} setOpen={setOpen} />
+
       {!open ? (
         <div className="chatIcon" onClick={() => setOpen(!open)}>
           Chat with us

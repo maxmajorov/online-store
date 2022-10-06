@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import Button from "@mui/material/Button";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import {
+  isMessageSendSuccessSelector,
   ordersInCartSelector,
   sendOrderInfoToTelegramTC,
   totalPriceSelector,
@@ -13,6 +14,7 @@ import { ShippingBlock } from "./shippingBlock/ShippingBlock";
 import classes from "./OrderPage.module.scss";
 import { PaymentBlock } from "./paymentBlock/PaymentBlock";
 import { currentUserSelector } from "../../store/reducers/auth-reducer";
+import { MessageSendModal } from "../common/modal/MessageSendModal";
 
 type OrderPageType = {
   isMakeOrder: boolean;
@@ -23,6 +25,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
     const totalPrice = useAppSelector(totalPriceSelector);
     const currentUser = useAppSelector(currentUserSelector);
     const ordersInCart = useAppSelector(ordersInCartSelector);
+    const isMessageSend = useAppSelector(isMessageSendSuccessSelector);
 
     const navigate = useNavigate();
 
@@ -157,6 +160,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
             </div>
           </div>
         </form>
+        <MessageSendModal isMessageSend={isMessageSend} />
         <div ref={makeOrderAncorRef} />
       </div>
     );

@@ -22,12 +22,14 @@ import {
   removeOrderFromCartAC,
   totalPriceSelector,
   OrderType,
+  isMessageSendSuccessSelector,
 } from "../../store/reducers/cart-reducer";
 import { Counter } from "../common/counter/Counter";
 import { useNavigate } from "react-router-dom";
 import { Promocodes } from "../../const";
 import { setAppErrorAC } from "../../store/reducers/app-reducer";
 import { OrderPage } from "../orderPage/OrderPage";
+import { MessageSendModal } from "../common/modal/MessageSendModal";
 
 interface Data {
   id: string;
@@ -185,6 +187,7 @@ export const Cart: React.FC = React.memo(() => {
   const ordersList = useAppSelector(ordersInCartSelector);
   const totalPrice = useAppSelector(totalPriceSelector);
   const isDiscountUse = useAppSelector(isDiscountUseSelector);
+  const isMessageSend = useAppSelector(isMessageSendSuccessSelector);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -275,6 +278,7 @@ export const Cart: React.FC = React.memo(() => {
       ) : (
         <div className={classes.notification}>Orders not found...</div>
       )}
+      {isMessageSend && <MessageSendModal isMessageSend={isMessageSend} />}
     </div>
   );
 });

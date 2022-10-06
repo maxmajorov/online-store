@@ -22,6 +22,7 @@ export const sendOrderInfoToTelegramTC = createAsyncThunk(
 
       if (response.data.ok) {
         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+        thunkAPI.dispatch(setIsSendMessageAC({}));
       } else {
         // handleServerAppError(response.data., dispatch);
         return thunkAPI.rejectWithValue(null);
@@ -49,6 +50,10 @@ const slice = createSlice({
   },
 
   reducers: {
+    setIsSendMessageAC(state, action: PayloadAction<{}>) {
+      state.isMessageSendSuccess = true;
+    },
+
     setCountAC(state, action: PayloadAction<{ id: string; count: number }>) {
       state.ordersInCart.map((el) =>
         el.data.id === action.payload.id
@@ -69,7 +74,6 @@ const slice = createSlice({
 
     delPromocodeAC(state) {
       state.ordersInCart.map((el) => (el.totalPrice = el.data.price));
-
       state.isDiscountUse = false;
       state.discount = 0;
     },
@@ -78,6 +82,7 @@ const slice = createSlice({
       state,
       action: PayloadAction<{ order: OrderType<OrderResponseType> }>
     ) {
+      state.isMessageSendSuccess = false;
       state.ordersInCart.push(action.payload.order);
       state.orderNums++;
     },
@@ -94,7 +99,9 @@ const slice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(sendOrderInfoToTelegramTC.fulfilled, (state, action) => {
-      state.isMessageSendSuccess = true;
+      // state.isMessageSendSuccess = true;
+      state.orderNums = 0;
+      state.ordersInCart = [];
     });
   },
 });
@@ -102,6 +109,7 @@ const slice = createSlice({
 export const cartReducer = slice.reducer;
 export const {
   setCountAC,
+  setIsSendMessageAC,
   applyPromocodeAC,
   delPromocodeAC,
   setOrdersToCartAC,
