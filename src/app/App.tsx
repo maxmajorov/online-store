@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "@mui/material";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import IconButton from "@mui/material/IconButton";
 import { Route, Routes } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { useAppDispatch } from "../store/store";
 import { Cart } from "../components/cart/Cart";
 import { OnlineStore } from "../components/onlineStore/OnlineStore";
 import { ErrorSnackbar } from "../components/common/ErrorSnackbar/ErrorSnackbar";
@@ -11,18 +11,19 @@ import { Header } from "../components/common/header/Header";
 import { WithLayout } from "../components/common/withLayout/WithLayout";
 import { Chat } from "../components/chat/Chat";
 import { MainPage } from "../components/mainPage/MainPage";
-import "./App.css";
 import { Footer } from "../components/common/footer/Footer";
-import { SignIN } from "../components/signInBtn/SignIn";
 import Error404 from "../components/common/error404/Error404";
+import "./App.css";
+import { initializeAppTC } from "../store/reducers/app-reducer";
 
 export const App = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   // dispatch(initializeAppTC());
-  // }, []);
+  //Скорее всего это здесь не нужно???
+  useEffect(() => {
+    dispatch(initializeAppTC());
+  }, []);
 
   return (
     <div className="App">
@@ -38,7 +39,6 @@ export const App = () => {
               </WithLayout>
             }
           />
-          <Route path="/register" element={<SignIN />} />
           <Route
             path="/catalog"
             element={

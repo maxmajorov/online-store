@@ -31,7 +31,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
     const isMessageSend = useAppSelector(isMessageSendSuccessSelector);
     // const isSignIn = useAppSelector(isSignInSelector);
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
 
@@ -101,6 +101,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
         dispatch(sendOrderInfoToTelegramTC(orderInfo));
 
         //Возможно стоит предусмотреть кейс на случай если user не залогинился!!!
+        navigate("/");
 
         formik.resetForm();
       },

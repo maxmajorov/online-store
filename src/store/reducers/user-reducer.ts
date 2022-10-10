@@ -10,11 +10,6 @@ import { RootStateType } from "../store";
 
 // ==== THUNKS ====
 
-interface ValidationErrors {
-  errors: Array<string>;
-  fieldsErrors: Array<string>;
-}
-
 const slice = createSlice({
   name: "products",
   initialState: {
@@ -27,7 +22,7 @@ const slice = createSlice({
   },
 });
 
-export const productsReducer = slice.reducer;
+export const userReducer = slice.reducer;
 
 export const { setIsLoggedInAC } = slice.actions;
 

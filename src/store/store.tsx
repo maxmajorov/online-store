@@ -4,16 +4,41 @@ import { useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { rootReducer } from "./reducers/reducers";
+import { combineReducers } from "redux";
+import {
+  appReducer,
+  authReducer,
+  cartReducer,
+  chatReducer,
+  userReducer,
+} from "./reducers";
 
-// ==== CREATE STORE ====
+// ==== PERSIST CONFIGS && persisted reducer ====
 
-const persistConfig = {
+const rootPersistConfig = {
   key: "root",
   storage,
+  blacklist: ["auth"],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+export const authPersistConfig = {
+  key: "auth",
+  storage,
+  blacklist: ["isSignIn"],
+};
+
+const rootReducer = combineReducers({
+  app: appReducer,
+  // auth: persistReducer(authPersistConfig, authReducer),
+  auth: authReducer,
+  chat: chatReducer,
+  cart: cartReducer,
+  user: userReducer,
+});
+
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+
+// ==== CREATE STORE ====
 
 export const store = configureStore({
   reducer: persistedReducer,
