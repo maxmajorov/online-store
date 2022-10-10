@@ -13,7 +13,10 @@ import { shippingCost } from "../../const";
 import { ShippingBlock } from "./shippingBlock/ShippingBlock";
 import classes from "./OrderPage.module.scss";
 import { PaymentBlock } from "./paymentBlock/PaymentBlock";
-import { currentUserSelector } from "../../store/reducers/auth-reducer";
+import {
+  currentUserSelector,
+  // isSignInSelector,
+} from "../../store/reducers/auth-reducer";
 import { MessageSendModal } from "../common/modal/MessageSendModal";
 
 type OrderPageType = {
@@ -26,8 +29,9 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
     const currentUser = useAppSelector(currentUserSelector);
     const ordersInCart = useAppSelector(ordersInCartSelector);
     const isMessageSend = useAppSelector(isMessageSendSuccessSelector);
+    // const isSignIn = useAppSelector(isSignInSelector);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
 
@@ -96,6 +100,8 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
 
         dispatch(sendOrderInfoToTelegramTC(orderInfo));
 
+        //Возможно стоит предусмотреть кейс на случай если user не залогинился!!!
+
         formik.resetForm();
       },
     });
@@ -160,6 +166,7 @@ export const OrderPage: React.FC<OrderPageType> = React.memo(
             </div>
           </div>
         </form>
+
         <MessageSendModal isMessageSend={isMessageSend} />
         <div ref={makeOrderAncorRef} />
       </div>

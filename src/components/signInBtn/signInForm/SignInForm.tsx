@@ -13,7 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Link from "@mui/material/Link";
 import classes from "./SignInForm.module.scss";
 
-type SignInFormModalType = {
+type TSignInFormModal = {
   active: boolean;
   setActive: (value: boolean) => void;
   status: string;
@@ -21,7 +21,7 @@ type SignInFormModalType = {
   signInWithGoogle: () => void;
 };
 
-export const SignInFormModal: React.FC<SignInFormModalType> = ({
+export const SignInFormModal: React.FC<TSignInFormModal> = ({
   active,
   setActive,
   status,

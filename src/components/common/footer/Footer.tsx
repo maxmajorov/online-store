@@ -7,12 +7,12 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import EmailIcon from "@mui/icons-material/Email";
 import classes from "./Footer.module.scss";
 
-type FooterPropsType = {
+type TFooter = {
   open: boolean;
   setOpen: (value: boolean) => void;
 };
 
-export const Footer: React.FC<FooterPropsType> = ({ open, setOpen }) => {
+export const Footer: React.FC<TFooter> = ({ open, setOpen }) => {
   const theme = createTheme({
     palette: {
       primary: {

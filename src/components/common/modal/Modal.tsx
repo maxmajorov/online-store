@@ -18,7 +18,7 @@ const style = {
   p: 4,
 };
 
-type PropsType = {
+type TModal = {
   // action: string;
   status: string;
   open: boolean;
@@ -26,7 +26,7 @@ type PropsType = {
   children: React.ReactNode;
 };
 
-export const UniversalModal: React.FC<PropsType> = ({
+export const UniversalModal: React.FC<TModal> = ({
   // action,
   status,
   open,

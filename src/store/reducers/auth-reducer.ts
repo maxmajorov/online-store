@@ -121,6 +121,7 @@ const slice = createSlice({
 
     builder.addCase(logoutTC.fulfilled, (state) => {
       state.isSignIn = false;
+      state.currentUser = {} as User;
     });
   },
 });
