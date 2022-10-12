@@ -1,75 +1,170 @@
+@import '../../../styles/scss/variables.scss';
+
 .headerSection {
-
- 
-
   
   .container {
     margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     max-width: 1200px;
-    padding: 16px 50px;
-    background-color: #fff;
-    
-    .headerLogo {
-      display: flex;
-      align-items: center;
-      width: 65px;
-      height: 65px;
-    }
-  
-    .searchField {
-      flex-basis: 550px;
-    }
-  
-    .controls {
+
+    .block_1 {
       display: flex;
       justify-content: space-between;
-      align-items: center; 
-  
-      &Avatar {
-        // width: 50px;
-        // height: 50px;
-        // border-radius: 50%;
-        margin-right: 20px;
-      }
-  
-      &Buttons {
+      align-items: center;
+      font-size: 14px;
+      padding: 8px 0;
+      border-bottom: 2px solid $backgroundColorLightGray;
+
+      .location {
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        margin-right: 60px;
-  
-        & {
-          font-weight: 600;
+        cursor: pointer;
+
+        &:hover {
+          color: $primaryColor;
+          transition: color 0.3s ease-in-out;
         }
       }
-  
-      &Cart {
+
+      .storeInfo {
         position: relative;
-        margin-right: 20px;
-  
-        &Orders {
+        display: flex;
+        align-items: center;
+
+        .benefits {
           display: flex;
-          justify-content: center;
+
+          &>li {
+            cursor: pointer;
+            margin-right: 8px;
+
+            &:hover {
+              color: $primaryColor;
+              transition: color 0.3s ease-in-out;
+            }
+          }
+
+          &::after {
+            content: '|';
+            color: $backgroundColorDark;
+          }
+        }
+
+        .contacts {
+          display: flex;
+          padding: 0 8px;
+
+          &>div {          
+            margin-right: 8px;
+
+            &:hover:last-child {
+              cursor: pointer;
+              color: $primaryColor;
+              transition: color 0.3s ease-in-out;
+            }
+          }
+
+          &::after {
+            content: '|';
+            color: $backgroundColorDark;
+          }
+
+          .phone {
+            display: flex;
+            justify-content: center;
+          }
+        }
+
+        .hours {
+          display: flex;
           align-items: center;
-          position: absolute;
-          top: -2px;
-          right: -4px;  
-          width: 18px;
-          height: 18px;
-          color: #fff;
-          background-color:  #F44336;
-          font-size: 14px;
-          border-radius: 50%;
+          font-size: 12px;
+          color: gray;
+
+          &_time {
+            margin-left: 5px;
+            text-align: center;
+          }
+          
+        }
+
+
+      }
+
+
+
+
+    }
+
+    .block_2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+
+      .headerLogo {
+        display: flex;
+        align-items: center;
+        width: 65px;
+        height: 65px;
+      }
+    
+      .searchField {
+        flex-basis: 550px;
+      }
+    
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; 
+    
+        &Avatar {
+          // width: 50px;
+          // height: 50px;
+          // border-radius: 50%;
+          margin-right: 20px;
+        }
+    
+        &Buttons {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-right: 60px;
+    
+          & {
+            font-weight: 600;
+          }
+        }
+    
+        &Cart {
+          position: relative;
+          margin-right: 20px;
+    
+          &Orders {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: -2px;
+            right: -4px;  
+            width: 18px;
+            height: 18px;
+            color: #fff;
+            background-color:  #F44336;
+            font-size: 14px;
+            border-radius: 50%;
+          }
         }
       }
     }
-  
   }
-   
+}
 
+.more {
+
+  &::after {
+
+  }
 }
 
 
