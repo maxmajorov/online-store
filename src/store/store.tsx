@@ -29,7 +29,6 @@ export const authPersistConfig = {
 
 const rootReducer = combineReducers({
   app: appReducer,
-  // auth: persistReducer(authPersistConfig, authReducer),
   auth: authReducer,
   chat: chatReducer,
   cart: cartReducer,
