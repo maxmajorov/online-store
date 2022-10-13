@@ -1,5 +1,9 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { customTheme } from './Theme';
+import { PlacesAutocomplete } from '../common/autocomplete/Autocomplete';
+import classes from './Maps.module.scss';
+
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
 const containerStyle = {
@@ -27,6 +31,7 @@ const defOptions = {
     scrollwheel: true,
     disableDoublrClickZoom: false,
     fullScreenControl: false,
+    styles: customTheme,
 };
 
 export const GoogleMaps = () => {
@@ -57,7 +62,7 @@ export const GoogleMaps = () => {
     }, []);
 
     return (
-        <div>
+        <div className={classes.mapsSection}>
             {isLoaded ? (
                 <GoogleMap
                     mapContainerStyle={containerStyle}
@@ -73,6 +78,9 @@ export const GoogleMaps = () => {
             ) : (
                 <h2>Maps not found</h2>
             )}
+            <div className={classes.addressSearchContainer}>
+                <PlacesAutocomplete isLoaded={isLoaded} />
+            </div>
         </div>
     );
 };

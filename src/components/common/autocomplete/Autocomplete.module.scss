@@ -1,0 +1,54 @@
+@import '../../../styles/scss/variables.scss';
+
+.root {
+    position: relative;
+    width: 100%;
+
+    &  * {
+        box-sizing: border-box;
+    }
+
+    .input {
+        width: 100%;
+        padding: 10px 15px;
+        border: 2px solid $backgroundColorLightGray;
+        font-size: 1rem;
+        font-weight: 700;
+
+        &:focus {
+            border-color: $primaryColor;
+            outline: none;
+        }
+    }
+
+    .suggestions {
+        position: absolute;
+        top: 0;
+        transform: translateY(39px);
+        background: #fff;
+        border: 2px solid rgb(34, 34, 34);
+        width: 100%;
+        z-index: 10;
+        list-style: none;
+        text-align: left;
+
+        .listItem {
+            padding: 10px 15px;
+            cursor: pointer;
+
+            &:hover { 
+                background: green;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
