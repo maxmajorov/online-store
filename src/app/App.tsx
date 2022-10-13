@@ -16,6 +16,7 @@ import Error404 from '../components/common/error404/Error404';
 import './App.css';
 import { appStatusSelector, initializeAppTC } from '../store/reducers/app-reducer';
 import { Menu } from '../components/common/menu/Menu';
+import { GoogleMaps } from '../components/maps/Maps';
 
 export const App = () => {
     const [open, setOpen] = useState(false);
@@ -66,6 +67,14 @@ export const App = () => {
                         element={
                             <WithLayout>
                                 <Cart />
+                            </WithLayout>
+                        }
+                    />
+                    <Route
+                        path="/maps"
+                        element={
+                            <WithLayout>
+                                <GoogleMaps />
                             </WithLayout>
                         }
                     />

@@ -52,6 +52,7 @@
 
         .contacts {
           display: flex;
+          align-items: center;
           padding: 0 8px;
 
           &>div {          
@@ -72,6 +73,7 @@
           .phone {
             display: flex;
             justify-content: center;
+            align-items: center;
           }
         }
 
@@ -87,20 +89,14 @@
           }
           
         }
-
-
       }
-
-
-
-
     }
 
     .block_2 {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 16px;
+      padding: 15px 0;
 
       .headerLogo {
         display: flex;
@@ -160,11 +156,5 @@
   }
 }
 
-.more {
-
-  &::after {
-
-  }
-}
 
 

@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
         <header className={classes.headerSection}>
             <div className={classes.container}>
                 <div className={classes.block_1}>
-                    <div className={classes.location}>
+                    <div className={classes.location} onClick={() => navigate('/maps')}>
                         <LocationOnIcon fontSize="small" />
                         <div>Minsk city</div>
                     </div>
