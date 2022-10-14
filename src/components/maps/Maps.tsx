@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { customTheme } from './Theme';
 import { PlacesAutocomplete } from '../common/autocomplete/Autocomplete';
 import classes from './Maps.module.scss';
 import { Button } from '@mui/material';
-import { pickupPoints } from '../../const';
+import { DEFAULT_LOCATION, pickupPoints } from '../../const';
+import { getBrowserLocation } from '../../utils/geolocation';
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
@@ -13,19 +14,12 @@ const containerStyle = {
     height: '500px',
 };
 
-// def place ==> minsk
-const defCenter = {
-    lat: 53.9,
-    lng: 27.559,
-};
-
 const MODES = {
     MOVE: 0,
     SET_MARKET: 1,
 };
 
 // options
-
 const defOptions = {
     panControl: true,
     zoomControl: true,
@@ -48,8 +42,7 @@ export const GoogleMaps = () => {
         libraries: ['places'],
     });
 
-    const [center, setCenter] = useState(defCenter);
-    // const [marker, setMarker] = useState({ point: '', location: { lat: 0, lng: 0 } });
+    const [center, setCenter] = useState(DEFAULT_LOCATION);
     const [marker, setMarker] = useState<any>([]);
     const [mode, setMode] = useState(MODES.MOVE);
     // const [map, setMap] = useState(null);
@@ -104,6 +97,16 @@ export const GoogleMaps = () => {
         [mode],
     );
 
+    useEffect(() => {
+        getBrowserLocation()
+            .then(currentLocation => {
+                setCenter(currentLocation);
+            })
+            .catch(defaultLocation => {
+                setCenter(defaultLocation);
+            });
+    }, []);
+
     return (
         <div className={classes.mapsSection}>
             {isLoaded ? (
@@ -139,7 +142,7 @@ export const GoogleMaps = () => {
                     Set
                 </Button>
                 <Button variant="contained" onClick={() => setMarker([])}>
-                    Delete
+                    Clear
                 </Button>
             </div>
         </div>

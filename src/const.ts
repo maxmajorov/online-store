@@ -77,6 +77,11 @@ export const pickupPoints = [
     },
 ];
 
+export const DEFAULT_LOCATION = {
+    lat: 53.9,
+    lng: 27.559,
+};
+
 export const paymentMethods = ['Payment upon receipt', 'Online payment'];
 
 export const shippingCost = 1.2;
