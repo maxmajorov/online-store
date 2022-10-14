@@ -51,24 +51,29 @@ export const deliveryTimes = [
 
 export const pickupPoints = [
     {
-        point: 'Partizanskaya st, 178',
+        point: 'Partizanskaya st, 128',
         workingHours: '09.00 - 21.00',
+        location: { lat: 53.8654, lng: 27.6596 },
     },
     {
-        point: 'Tashkentskaya st, 56',
+        point: 'Tashkentskaya st, 19',
         workingHours: '09.00 - 21.00',
+        location: { lat: 53.8447, lng: 27.6289 },
     },
     {
-        point: 'Mayakovskaya st, 47',
+        point: 'Dzianisayskaya st, 8',
         workingHours: '10.00 - 22.00',
+        location: { lat: 53.8714, lng: 27.5725 },
     },
     {
-        point: 'Vasnecova st, 23',
+        point: 'Derzhinskogo pr, 104-2',
         workingHours: '09.00 - 21.00',
+        location: { lat: 53.8631, lng: 27.483 },
     },
     {
-        point: 'Varvasheni st, 1',
+        point: 'Pobeditelej pr, 65',
         workingHours: '09.00 - 21.00',
+        location: { lat: 53.926, lng: 27.517 },
     },
 ];
 

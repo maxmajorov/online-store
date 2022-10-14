@@ -4,6 +4,7 @@ import { customTheme } from './Theme';
 import { PlacesAutocomplete } from '../common/autocomplete/Autocomplete';
 import classes from './Maps.module.scss';
 import { Button } from '@mui/material';
+import { pickupPoints } from '../../const';
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
@@ -48,26 +49,28 @@ export const GoogleMaps = () => {
     });
 
     const [center, setCenter] = useState(defCenter);
+    // const [marker, setMarker] = useState({ point: '', location: { lat: 0, lng: 0 } });
+    const [marker, setMarker] = useState<any>([]);
     const [mode, setMode] = useState(MODES.MOVE);
-    const [map, setMap] = useState(null);
+    // const [map, setMap] = useState(null);
 
-    // const mapRef = useRef(undefined);
-    // const onLoad = useCallback(function callback(map) {
-    //     mapRef.current = map;
-    // }, []);
-    // const onUnmount = useCallback(function callback(map) {
-    //     mapRef.current = undefined;
-    // }, []);
-
+    const mapRef = useRef(undefined);
     const onLoad = useCallback(function callback(map) {
-        const bounds = new window.google.maps.LatLngBounds(center);
-        map.fitBounds(bounds);
-        setMap(map);
+        mapRef.current = map;
+    }, []);
+    const onUnmount = useCallback(function callback(map) {
+        mapRef.current = undefined;
     }, []);
 
-    const onUnmount = useCallback(function callback(map) {
-        setMap(null);
-    }, []);
+    // const onLoad = useCallback(function callback(map) {
+    //     const bounds = new window.google.maps.LatLngBounds(center);
+    //     map.fitBounds(bounds);
+    //     setMap(map);
+    // }, []);
+
+    // const onUnmount = useCallback(function callback(map) {
+    //     setMap(null);
+    // }, []);
 
     // select place on the map
     const onPlaceSelect = useCallback((coordinates: { lat: number; lng: number }) => {
@@ -89,11 +92,17 @@ export const GoogleMaps = () => {
     }, [mode]);
 
     // set markers on the map
-    const onMapClick = (location: any) => {
-        if (MODES.SET_MARKET) {
-            console.log(location);
-        }
-    };
+    const onMapClick = useCallback(
+        (location: any) => {
+            if (mode === MODES.SET_MARKET) {
+                const lat = location.latLng.lat();
+                const lng = location.latLng.lng();
+                console.log({ lat, lng });
+                setMarker([{ location: { lat, lng } }]);
+            }
+        },
+        [mode],
+    );
 
     return (
         <div className={classes.mapsSection}>
@@ -101,7 +110,7 @@ export const GoogleMaps = () => {
                 <GoogleMap
                     mapContainerStyle={containerStyle}
                     center={center}
-                    zoom={8}
+                    zoom={11}
                     onLoad={onLoad}
                     onUnmount={onUnmount}
                     options={defOptions}
@@ -109,11 +118,17 @@ export const GoogleMaps = () => {
                 >
                     {/* Child components, such as markers, info windows, etc. */}
 
-                    <Marker
-                        position={center}
-                        icon={{ url: '/location.svg' }}
-                        label={{ text: 'You are here!', color: '#fff' }}
-                    />
+                    <Marker position={center} />
+                    {[...pickupPoints, ...marker].map(point => (
+                        <Marker
+                            position={point.location}
+                            icon={{ url: '/location.svg' }}
+                            label={{
+                                text: point.point,
+                                color: '#fff',
+                            }}
+                        />
+                    ))}
                 </GoogleMap>
             ) : (
                 <h2>Maps not found</h2>
@@ -122,6 +137,9 @@ export const GoogleMaps = () => {
                 <PlacesAutocomplete isLoaded={isLoaded} onSelect={onPlaceSelect} />
                 <Button variant="contained" onClick={toggleModes}>
                     Set
+                </Button>
+                <Button variant="contained" onClick={() => setMarker([])}>
+                    Delete
                 </Button>
             </div>
         </div>
