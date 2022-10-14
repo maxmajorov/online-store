@@ -5,10 +5,10 @@ import classes from './Autocomplete.module.scss';
 
 type TPlaceAutocomplete = {
     isLoaded: boolean;
-    // onSelect: { lat: number; lng: number };
+    onSelect: (coordinates: { lat: number; lng: number }) => void;
 };
 
-export const PlacesAutocomplete: React.FC<TPlaceAutocomplete> = ({ isLoaded }) => {
+export const PlacesAutocomplete: React.FC<TPlaceAutocomplete> = ({ isLoaded, onSelect }) => {
     const {
         ready,
         init,
@@ -42,7 +42,7 @@ export const PlacesAutocomplete: React.FC<TPlaceAutocomplete> = ({ isLoaded }) =
                 getGeocode({ address: description }).then(results => {
                     const { lat, lng } = getLatLng(results[0]);
                     console.log('📍 Coordinates: ', { lat, lng });
-                    // onSelect({ lat, lng }) //selected item for changing place ==> use as center point
+                    onSelect({ lat, lng }); //selected item for changing place ==> use as center point
                 });
             };
 

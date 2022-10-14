@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { customTheme } from './Theme';
 import { PlacesAutocomplete } from '../common/autocomplete/Autocomplete';
 import classes from './Maps.module.scss';
+import { Button } from '@mui/material';
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
@@ -15,6 +16,11 @@ const containerStyle = {
 const defCenter = {
     lat: 53.9,
     lng: 27.559,
+};
+
+const MODES = {
+    MOVE: 0,
+    SET_MARKET: 1,
 };
 
 // options
@@ -41,6 +47,8 @@ export const GoogleMaps = () => {
         libraries: ['places'],
     });
 
+    const [center, setCenter] = useState(defCenter);
+    const [mode, setMode] = useState(MODES.MOVE);
     const [map, setMap] = useState(null);
 
     // const mapRef = useRef(undefined);
@@ -52,7 +60,7 @@ export const GoogleMaps = () => {
     // }, []);
 
     const onLoad = useCallback(function callback(map) {
-        const bounds = new window.google.maps.LatLngBounds(defCenter);
+        const bounds = new window.google.maps.LatLngBounds(center);
         map.fitBounds(bounds);
         setMap(map);
     }, []);
@@ -61,25 +69,60 @@ export const GoogleMaps = () => {
         setMap(null);
     }, []);
 
+    // select place on the map
+    const onPlaceSelect = useCallback((coordinates: { lat: number; lng: number }) => {
+        setCenter(coordinates);
+    }, []);
+
+    // toggleModes
+    const toggleModes = useCallback(() => {
+        switch (mode) {
+            case MODES.MOVE:
+                setMode(MODES.SET_MARKET);
+                break;
+            case MODES.SET_MARKET:
+                setMode(MODES.MOVE);
+                break;
+            default:
+                setMode(MODES.MOVE);
+        }
+    }, [mode]);
+
+    // set markers on the map
+    const onMapClick = (location: any) => {
+        if (MODES.SET_MARKET) {
+            console.log(location);
+        }
+    };
+
     return (
         <div className={classes.mapsSection}>
             {isLoaded ? (
                 <GoogleMap
                     mapContainerStyle={containerStyle}
-                    center={defCenter}
+                    center={center}
                     zoom={8}
                     onLoad={onLoad}
                     onUnmount={onUnmount}
                     options={defOptions}
+                    onClick={onMapClick}
                 >
                     {/* Child components, such as markers, info windows, etc. */}
-                    <></>
+
+                    <Marker
+                        position={center}
+                        icon={{ url: '/location.svg' }}
+                        label={{ text: 'You are here!', color: '#fff' }}
+                    />
                 </GoogleMap>
             ) : (
                 <h2>Maps not found</h2>
             )}
             <div className={classes.addressSearchContainer}>
-                <PlacesAutocomplete isLoaded={isLoaded} />
+                <PlacesAutocomplete isLoaded={isLoaded} onSelect={onPlaceSelect} />
+                <Button variant="contained" onClick={toggleModes}>
+                    Set
+                </Button>
             </div>
         </div>
     );

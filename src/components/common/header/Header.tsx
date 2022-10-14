@@ -14,6 +14,7 @@ import classes from './Header.module.scss';
 import { currentUserSelector } from '../../../store/reducers/auth-reducer';
 import { ordersNumSelector, totalPriceSelector } from '../../../store/reducers/cart-reducer';
 import { useNavigate } from 'react-router-dom';
+import { PATH } from '../../../const';
 
 export const Header: React.FC = () => {
     const [searchCustomer, setSearchCustomer] = useState<string>('');
@@ -32,7 +33,7 @@ export const Header: React.FC = () => {
         <header className={classes.headerSection}>
             <div className={classes.container}>
                 <div className={classes.block_1}>
-                    <div className={classes.location} onClick={() => navigate('/maps')}>
+                    <div className={classes.location} onClick={() => navigate(PATH.LOCATION)}>
                         <LocationOnIcon fontSize="small" />
                         <div>Minsk city</div>
                     </div>
@@ -72,7 +73,10 @@ export const Header: React.FC = () => {
                     </div>
                     <div className={classes.controls}>
                         <div className={classes.controlsAvatar}>
-                            <Avatar src={currentUser.photoURL ? currentUser.photoURL : defaultAva} alt="avatar" />
+                            <Avatar
+                                src={currentUser.photoURL ? currentUser.photoURL : defaultAva}
+                                alt="avatar"
+                            />
                         </div>
                         <div className={classes.controlsButtons}>
                             <div>{currentUser.displayName ? currentUser.displayName : 'HELLO'}</div>

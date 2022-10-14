@@ -17,6 +17,7 @@ import './App.css';
 import { appStatusSelector, initializeAppTC } from '../store/reducers/app-reducer';
 import { Menu } from '../components/common/menu/Menu';
 import { GoogleMaps } from '../components/maps/Maps';
+import { PATH } from '../const';
 
 export const App = () => {
     const [open, setOpen] = useState(false);
@@ -47,7 +48,7 @@ export const App = () => {
                         }
                     />
                     <Route
-                        path="/catalog"
+                        path={PATH.CATALOG}
                         element={
                             <WithLayout>
                                 <OnlineStore />
@@ -55,7 +56,7 @@ export const App = () => {
                         }
                     />
                     <Route
-                        path="/retro-cars"
+                        path={PATH.RETRO_CARS}
                         element={
                             <WithLayout>
                                 <OnlineStore />
@@ -63,7 +64,7 @@ export const App = () => {
                         }
                     />
                     <Route
-                        path="/cart"
+                        path={PATH.CART}
                         element={
                             <WithLayout>
                                 <Cart />
@@ -71,7 +72,7 @@ export const App = () => {
                         }
                     />
                     <Route
-                        path="/maps"
+                        path={PATH.LOCATION}
                         element={
                             <WithLayout>
                                 <GoogleMaps />
