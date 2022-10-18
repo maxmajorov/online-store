@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/online-store-firebase/static/css/main.c5e32575.chunk.css",
+    "main.js": "/online-store-firebase/static/js/main.af630028.chunk.js",
+    "main.js.map": "/online-store-firebase/static/js/main.af630028.chunk.js.map",
+    "runtime-main.js": "/online-store-firebase/static/js/runtime-main.10a64bf9.js",
+    "runtime-main.js.map": "/online-store-firebase/static/js/runtime-main.10a64bf9.js.map",
+    "static/css/2.187b9c3c.chunk.css": "/online-store-firebase/static/css/2.187b9c3c.chunk.css",
+    "static/js/2.0f4b4c27.chunk.js": "/online-store-firebase/static/js/2.0f4b4c27.chunk.js",
+    "static/js/2.0f4b4c27.chunk.js.map": "/online-store-firebase/static/js/2.0f4b4c27.chunk.js.map",
+    "index.html": "/online-store-firebase/index.html",
+    "static/css/2.187b9c3c.chunk.css.map": "/online-store-firebase/static/css/2.187b9c3c.chunk.css.map",
+    "static/css/main.c5e32575.chunk.css.map": "/online-store-firebase/static/css/main.c5e32575.chunk.css.map",
+    "static/js/2.0f4b4c27.chunk.js.LICENSE.txt": "/online-store-firebase/static/js/2.0f4b4c27.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/online-store-firebase/static/media/Raleway-Thin.537e4a26.ttf",
+    "static/media/def-image.3ad98a37.png": "/online-store-firebase/static/media/def-image.3ad98a37.png",
+    "static/media/default-image.fb79f9e7.png": "/online-store-firebase/static/media/default-image.fb79f9e7.png",
+    "static/media/Error404.module.css": "/online-store-firebase/static/media/doubt-3516365.0d37e364.jpg",
+    "static/media/logo.597e24a1.jpg": "/online-store-firebase/static/media/logo.597e24a1.jpg",
+    "static/media/rc-1.b97bf154.jpg": "/online-store-firebase/static/media/rc-1.b97bf154.jpg",
+    "static/media/rc-2.8a8dab53.jpg": "/online-store-firebase/static/media/rc-2.8a8dab53.jpg",
+    "static/media/rc-3.882248d4.jpg": "/online-store-firebase/static/media/rc-3.882248d4.jpg",
+    "static/media/rc-4.7df49732.jpg": "/online-store-firebase/static/media/rc-4.7df49732.jpg",
+    "static/media/rc-5.6f9899ee.jpg": "/online-store-firebase/static/media/rc-5.6f9899ee.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.10a64bf9.js",
+    "static/css/2.187b9c3c.chunk.css",
+    "static/js/2.0f4b4c27.chunk.js",
+    "static/css/main.c5e32575.chunk.css",
+    "static/js/main.af630028.chunk.js"
+  ]
+}
