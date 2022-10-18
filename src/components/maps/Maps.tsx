@@ -41,7 +41,7 @@ type TGoogleMaps = {
     selectCity: TCity;
 };
 
-export const GoogleMaps: React.FC<TGoogleMaps> = ({ hoverItem, selectCity }) => {
+export const GoogleMaps: React.FC<TGoogleMaps> = React.memo(({ hoverItem, selectCity }) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY ? GOOGLE_MAPS_API_KEY : '', //string | ''
@@ -157,4 +157,4 @@ export const GoogleMaps: React.FC<TGoogleMaps> = ({ hoverItem, selectCity }) => 
             </div>
         </div>
     );
-};
+});

@@ -25,6 +25,7 @@ export const OfficesLocation: React.FC = React.memo(() => {
                                 key={office.id}
                                 className={classes.officesItem}
                                 onMouseEnter={e => setHoverItem(office.id)}
+                                onMouseLeave={e => setHoverItem('')}
                             >
                                 <div className={classes.title}>{office.point}</div>
                                 <div className={classes.hours}>
