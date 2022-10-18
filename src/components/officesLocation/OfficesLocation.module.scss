@@ -1,0 +1,54 @@
+@import '../../styles/scss/variables.scss';
+
+.locationSection {
+  display: flex;
+  // margin: 0 auto;
+  box-shadow: 0 4px 16px rgb(6 10 13 / 20%);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+
+  .officesLocation {
+      
+
+      .officesList {
+        height: 39vh;
+        overflow-y: scroll;
+        padding: 20px;
+
+        .officesItem {
+          border: 1px solid $backgroundColorLightGray;     
+          box-sizing: border-box;
+          border-radius: 8px;
+          margin-bottom: 12px;
+          padding: 12px 16px 16px;
+    
+          &:hover {
+            color: $primaryColor;
+          }
+    
+          .title {
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+          }
+    
+          .hours {
+            display: flex;
+            align-items: center;
+            
+            &_time {
+              font-size: 14px;
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+
+    
+  }
+
+}
+
+
+

@@ -73,7 +73,7 @@ export const PlacesAutocomplete: React.FC<TPlaceAutocomplete> = ({ isLoaded, onS
                 value={value}
                 onChange={handleInput}
                 disabled={!ready}
-                placeholder="Where are you going?"
+                placeholder="Choose your location"
             />
             {status === 'OK' && <ul className={classes.suggestions}>{renderSuggestions()}</ul>}
         </div>

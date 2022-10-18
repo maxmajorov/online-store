@@ -1,49 +1,69 @@
-import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
+import React from 'react';
+import { Theme, useTheme } from '@mui/material/styles';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { TCity } from '../../../types';
 
-export const SelectComponent = () => {
-    const [item, setItem] = React.useState('');
+const ITEM_HEIGHT = 40;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setItem(event.target.value);
+function getStyles(name: string, item: string, theme: Theme) {
+    return {
+        fontWeight:
+            item.indexOf(name) === -1
+                ? theme.typography.fontWeightRegular
+                : theme.typography.fontWeightMedium,
+    };
+}
+
+type TSelectComponent = {
+    selectItems: any;
+    currentItem: string;
+    setSelectItem: (selectItem: TCity) => void;
+};
+
+export const SelectComponent: React.FC<TSelectComponent> = ({
+    currentItem,
+    setSelectItem,
+    selectItems,
+}) => {
+    const theme = useTheme();
+
+    const handleChange = (event: SelectChangeEvent<typeof currentItem>) => {
+        setSelectItem(event.target.value as TCity);
     };
 
     return (
         <div>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-standard-label">Age</InputLabel>
+            <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
                 <Select
-                    labelId="demo-simple-select-standard-label"
-                    id="demo-simple-select-standard"
-                    value={item}
+                    size="small"
+                    displayEmpty
+                    value={currentItem}
                     onChange={handleChange}
-                    label="Age"
+                    input={<OutlinedInput />}
+                    MenuProps={MenuProps}
+                    inputProps={{ 'aria-label': 'Without label' }}
                 >
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-            </FormControl>
-            <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
-                <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    value={item}
-                    onChange={handleChange}
-                >
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {Object.keys(selectItems).map(item => (
+                        <MenuItem
+                            key={item}
+                            value={item}
+                            style={getStyles(item, currentItem, theme)}
+                        >
+                            {item}
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
         </div>

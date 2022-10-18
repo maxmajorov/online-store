@@ -77,6 +77,62 @@ export const pickupPoints = [
     },
 ];
 
+export const districts = ['Minsk', 'Grodno', 'Brest', 'Gomel', 'Mogilev', 'Vitebsk'];
+
+export const offices = {
+    Minsk: [
+        {
+            id: 1,
+            point: 'Partizanskaya pr, 128',
+            workingHours: '09.00 - 21.00',
+            location: { lat: 53.8654, lng: 27.6596 },
+        },
+        {
+            id: 2,
+            point: 'Tashkentskaya st, 19',
+            workingHours: '09.00 - 21.00',
+            location: { lat: 53.8447, lng: 27.6289 },
+        },
+        {
+            id: 3,
+            point: 'Dzianisayskaya st, 8',
+            workingHours: '10.00 - 22.00',
+            location: { lat: 53.8714, lng: 27.5725 },
+        },
+        {
+            id: 4,
+            point: 'Derzhinskogo pr, 104-2',
+            workingHours: '09.00 - 21.00',
+            location: { lat: 53.8631, lng: 27.483 },
+        },
+        {
+            id: 5,
+            point: 'Pobeditelej pr, 65',
+            workingHours: '09.00 - 21.00',
+            location: { lat: 53.926, lng: 27.517 },
+        },
+    ],
+    Grodno: [
+        {
+            id: 1,
+            point: 'Kosmonavtov pr, 46',
+            workingHours: '09.00 - 21.00',
+            location: { lat: 53.67462, lng: 23.8594 },
+        },
+        {
+            id: 2,
+            point: 'Zaharova st, 19',
+            workingHours: '09.00 - 21.00',
+            location: { lat: 53.6763, lng: 23.8444 },
+        },
+    ],
+    Brest: [],
+    Gomel: [],
+    Mogilev: [],
+    Vitebsk: [],
+};
+
+// ==== def loc ==> MInsk
 export const DEFAULT_LOCATION = {
     lat: 53.9,
     lng: 27.559,

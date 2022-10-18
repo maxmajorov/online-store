@@ -18,6 +18,7 @@ import { appStatusSelector, initializeAppTC } from '../store/reducers/app-reduce
 import { Menu } from '../components/common/menu/Menu';
 import { GoogleMaps } from '../components/maps/Maps';
 import { PATH } from '../const';
+import { OfficesLocation } from '../components/officesLocation/OfficesLocation';
 
 export const App = () => {
     const [open, setOpen] = useState(false);
@@ -75,7 +76,7 @@ export const App = () => {
                         path={PATH.LOCATION}
                         element={
                             <WithLayout>
-                                <GoogleMaps />
+                                <OfficesLocation />
                             </WithLayout>
                         }
                     />
