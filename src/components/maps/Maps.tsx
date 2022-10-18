@@ -4,8 +4,9 @@ import { customTheme } from './Theme';
 import { PlacesAutocomplete } from '../common/autocomplete/Autocomplete';
 import classes from './Maps.module.scss';
 import { Button } from '@mui/material';
-import { DEFAULT_LOCATION, pickupPoints } from '../../const';
+import { DEFAULT_LOCATION, districtsCoords, offices } from '../../const';
 import { getBrowserLocation } from '../../utils/geolocation';
+import { TCity } from '../../types';
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
@@ -35,7 +36,12 @@ const defOptions = {
     styles: customTheme,
 };
 
-export const GoogleMaps = () => {
+type TGoogleMaps = {
+    hoverItem: string;
+    selectCity: TCity;
+};
+
+export const GoogleMaps: React.FC<TGoogleMaps> = ({ hoverItem, selectCity }) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: GOOGLE_MAPS_API_KEY ? GOOGLE_MAPS_API_KEY : '', //string | ''
@@ -98,6 +104,10 @@ export const GoogleMaps = () => {
     );
 
     useEffect(() => {
+        setCenter(districtsCoords[selectCity]);
+    }, [selectCity]);
+
+    useEffect(() => {
         getBrowserLocation()
             .then(currentLocation => {
                 setCenter(currentLocation);
@@ -122,14 +132,14 @@ export const GoogleMaps = () => {
                     {/* Child components, such as markers, info windows, etc. */}
 
                     <Marker position={center} />
-                    {[...pickupPoints, ...marker].map(point => (
+                    {[...offices[selectCity], ...marker].map(point => (
                         <Marker
                             position={point.location}
-                            icon={{ url: '/location.svg' }}
-                            label={{
-                                text: point.point,
-                                color: '#fff',
-                            }}
+                            icon={point.id !== hoverItem ? { url: '/location.svg' } : ''}
+                            // label={{
+                            //     text: point.point,
+                            //     color: '#fff',
+                            // }}
                         />
                     ))}
                 </GoogleMap>

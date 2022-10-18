@@ -77,36 +77,43 @@ export const pickupPoints = [
     },
 ];
 
-export const districts = ['Minsk', 'Grodno', 'Brest', 'Gomel', 'Mogilev', 'Vitebsk'];
+export const districtsCoords = {
+    Minsk: { lat: 53.9, lng: 27.559 },
+    Grodno: { lat: 53.6725, lng: 23.8178 },
+    Brest: { lat: 52.09916, lng: 23.76297 },
+    Gomel: { lat: 52.43965, lng: 30.97803 },
+    Mogilev: { lat: 53.90638, lng: 30.34938 },
+    Vitebsk: { lat: 55.19376, lng: 30.20313 },
+};
 
 export const offices = {
     Minsk: [
         {
-            id: 1,
+            id: '1',
             point: 'Partizanskaya pr, 128',
             workingHours: '09.00 - 21.00',
             location: { lat: 53.8654, lng: 27.6596 },
         },
         {
-            id: 2,
+            id: '2',
             point: 'Tashkentskaya st, 19',
             workingHours: '09.00 - 21.00',
             location: { lat: 53.8447, lng: 27.6289 },
         },
         {
-            id: 3,
+            id: '3',
             point: 'Dzianisayskaya st, 8',
             workingHours: '10.00 - 22.00',
             location: { lat: 53.8714, lng: 27.5725 },
         },
         {
-            id: 4,
+            id: '4',
             point: 'Derzhinskogo pr, 104-2',
             workingHours: '09.00 - 21.00',
             location: { lat: 53.8631, lng: 27.483 },
         },
         {
-            id: 5,
+            id: '5',
             point: 'Pobeditelej pr, 65',
             workingHours: '09.00 - 21.00',
             location: { lat: 53.926, lng: 27.517 },
@@ -114,13 +121,13 @@ export const offices = {
     ],
     Grodno: [
         {
-            id: 1,
+            id: '1',
             point: 'Kosmonavtov pr, 46',
             workingHours: '09.00 - 21.00',
             location: { lat: 53.67462, lng: 23.8594 },
         },
         {
-            id: 2,
+            id: '2',
             point: 'Zaharova st, 19',
             workingHours: '09.00 - 21.00',
             location: { lat: 53.6763, lng: 23.8444 },

@@ -8,6 +8,7 @@ import { TCity } from '../../types';
 
 export const OfficesLocation: React.FC = React.memo(() => {
     const [selectItem, setSelectItem] = useState<TCity>('Minsk');
+    const [hoverItem, setHoverItem] = useState('');
 
     return (
         <div className={classes.locationSection}>
@@ -19,8 +20,12 @@ export const OfficesLocation: React.FC = React.memo(() => {
                 />
                 <div className={classes.officesList}>
                     {offices[selectItem].length ? (
-                        offices[selectItem].map((office, ind) => (
-                            <div key={ind} className={classes.officesItem}>
+                        offices[selectItem].map(office => (
+                            <div
+                                key={office.id}
+                                className={classes.officesItem}
+                                onMouseEnter={e => setHoverItem(office.id)}
+                            >
                                 <div className={classes.title}>{office.point}</div>
                                 <div className={classes.hours}>
                                     <AccessTimeIcon fontSize="small" />
@@ -35,7 +40,7 @@ export const OfficesLocation: React.FC = React.memo(() => {
                     )}
                 </div>
             </div>
-            <GoogleMaps />
+            <GoogleMaps selectCity={selectItem} hoverItem={hoverItem} />
         </div>
     );
 });
